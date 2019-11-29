@@ -1,0 +1,141 @@
+// Splash container
+#splash {
+  background-color: $primary;
+  padding: 0;
+  position: relative;
+  width: auto;
+
+  &:before {
+    @include background-gradient;
+
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .btn-link {
+    @include link-color($d:$link);
+  }
+  nav,
+  section {
+    position: relative;
+    z-index: 2;
+
+    @include for-medium-width-up {
+      position: absolute;
+    }
+  }
+
+  @include for-medium-width-up {
+    min-height: 400px;
+	  height: 85vh;
+  }
+}
+
+#splash-img {
+  height: 100%;
+  opacity: 0.5;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#splash-img2 {
+  bottom: -50%;
+  opacity: 0.06;
+  position: absolute;
+  left: -50%;
+  width: 130%;
+}
+
+#splash-container {
+  padding: 50px;
+}
+
+// Contains FINRA technology open source breadcrumb
+#splash-menu-finra {
+  font-family: $font-family-1;
+
+  @include for-medium-width-up {
+    left: 50px;
+    top: 50px;
+  }
+
+  li {
+    &:not(:first-child) {
+      &:before {
+        color: $white-high-transparency;
+        content: "/";
+        margin-left: 0.3em;
+        margin-right: 0.5em;
+      }
+    }
+  }
+}
+
+// Contains title and subtitle
+#splash-title {
+  text-align: center;
+
+  @include for-medium-width-up {
+    height: 40%;
+    left: 25%;
+    top: 37%;
+    width: 50%;
+  }
+
+  h1 {
+    font-size: $font-size-display-1;
+    margin: 0 0 0.6em;
+  }
+  p {
+    font-size: $font-size-title;
+    font-weight: $font-weight-light;
+    line-height: 1.2;
+  }
+}
+
+// Contains call-to-action buttons
+#splash-cta {
+  padding: 20px 0;
+
+  @include for-medium-width-up {
+    bottom: 50px;
+    left: 50px;
+    padding: 0;
+  }
+}
+
+// Contains links to page sections
+#splash-menu-anchors {
+  // Hide when small screen max-width
+  // On mobile, not necessary to show
+  display: none;
+
+  @include for-medium-width-up {
+    display: block;
+    bottom: 50px;
+    right: 50px;
+  }
+
+  li {
+    &:not(:first-child) {
+      &:before {
+        color: $white-high-transparency;
+        content: ":";
+        margin-left: 0.3em;
+        margin-right: 0.5em;
+      }
+    }
+  }
+}
+
+// Contains outbound links, like share
+#splash-links {
+  @include for-medium-width-up {
+    right: 50px;
+    top: 50px;
+  }
+}

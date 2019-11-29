@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
+		<title>Maskopy : DevOps : Open Source : FINRA Technology</title>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/social-share-kit.css" type="text/css">
+		<link rel="stylesheet" href="css/main.min.css">
+		<!-- Magnific Popup core CSS file -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+		<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxxx-x"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-137625846-1');
+		</script>
+	</head>
+	<body>
+
+
+		<header id="finra-tech">
+			<div id="header-container">
+				<a href="http://technology.finra.org/" target="_blank">FINRA Technology</a>
+			</div>
+		</header>
+		<main>
+			<section id="splash">
+				<div id="splash-container">
+					<nav id="splash-menu-finra" class="reveal">
+						<ul class="no-style">
+							<li><a class="btn-link" data-hover="Open Source" href="http://technology.finra.org/opensource.html">Open Source</a></li>
+							<li><a class="btn-link" data-hover="DevOps" href="http://technology.finra.org/opensource.html#devops">DevOps</a></li>
+						</ul>
+					</nav>
+					<section id="splash-title">
+						<h1>Maskopy</h1>
+						<p>Copy and Obfuscate Production Data to Target Environments in AWS</p>
+					</section>
+					<section id="splash-cta" class="reveal">
+						<a class="btn-primary" href="docs.html"><span>Get Started</span></a>
+						<!-- <a class="btn-secondary popup-youtube" href="https://www.youtube.com/watch?v=j_1afHVTtso"><span>Watch Video</span></a> -->
+						<a class="btn-secondary" href="https://github.com/FINRAOS/Maskopy"><span>View on GitHub</span></a>
+					</section>
+					<nav id="splash-menu-anchors" class="reveal">
+						<ul class="no-style">
+							<li><a class="btn-link" href="#features" data-hover="Features">Features</a></li>
+							<li><a class="btn-link" href="#related-products" data-hover="Related Products">DevOps Suite</a></li>
+						</ul>
+					</nav>
+					<section id="splash-links" class="box">
+						<a id="social-links-toggle" class="box-toggle btn-icon">
+							<span><i class="fas fa-share-alt" alt="Share this"></i></span>
+						</a>
+						<div id="social-links-container" class="box-container ssk-group">
+							<a class="ssk ssk-facebook"></a>
+							<a class="ssk ssk-twitter"></a>
+							<a class="ssk ssk-linkedin"></a>
+							<a class="ssk ssk-google-plus"></a>
+							<a class="ssk ssk-email"></a>
+						</div>
+					</section>
+					<img id="splash-img" src="img/maskopy_logo.svg" alt="">
+				</div>
+			</section><!-- End splash -->
+
+			<section id="features">
+				<div id="features-container">
+					<h1 class="reveal">Features</h1>
+					<dl class="two-cols reveal-features">
+						<span>
+							<!-- For SVGs, remove all <desc> tags inside SVG code -->
+							<img src="img/1.svg" alt="">
+						</span>
+						<dt>Simplified Copy and Obfuscation</dt>
+						<dd>
+							Maskopy copies and provides ability to run obfuscation on production data across AWS accounts. Any sensitive information in the production data is obfuscated in a transient instance. The final obfuscated snapshot is shared in the user-specified environments.
+						</dd>
+					</dl>
+					<dl class="two-cols reveal-features">
+						<span>
+							<!-- For SVGs, remove all <desc> tags inside SVG code -->
+							<img src="img/2.svg" alt="">
+						</span>
+						<dt>Self-Service and End-To-End Automated</dt>
+						<dd>
+							Maskopy is a self-serviced solution that allows users to get production data without involving multiple teams. It is fully automated and is implemented to easily plug into CI/CD pipelines and other automation solutions through SNS or SQS.
+						</dd>
+					</dl>
+					<dl class="two-cols reveal-features">
+						<span>
+							<img src="img/3.svg" alt="">
+						</span>
+						<dt>Secure Design</dt>
+						<dd>
+							Maskopy has security controls such as access management via IAM roles, authorization on the caller identity, network access to transient resources controlled through security groups. Bring your own container with third party tools for obfuscation algorithms.
+						</dd>
+					</dl>
+				</div>
+			</section>
+
+			<section id="get-started">
+				<h1 class="reveal">Begin your journey</h1>
+				<p class="reveal">Check out our docs for a walkthrough guide and how to start using the product.</p>
+				<a class="btn-primary reveal-get-started" href="docs.html"><span>Get started</span></a>
+			</section>
+
+			<section class="section-light-bg" id="related-products">
+				<h1 class="reveal">Learn more about our suite</h1>
+				<ul id="list-related-products" class="no-style">
+					<li class="reveal-related-products">
+						<a href="https://finraos.github.io/aphelion/">
+							<img src="img/Aphelion_logo.svg" alt="">
+							<h2>Aphelion</h2>
+							<p>Visualize AWS service usage limits</p>
+						</a>
+					</li>
+					<li class="reveal-related-products">
+						<a href="https://finraos.github.io/Fidelius">
+							<img src="img/Fidelius_logo.svg" alt="">
+							<h2>Fidelius</h2>
+							<p>Manage your secrets in AWS</p>
+						</a>
+                    </li>
+					<li class="reveal-related-products">
+						<a href="https://finraos.github.io/Gatekeeper/">
+							<img src="img/Gatekeeper_logo.svg" alt="">
+							<h2>Gatekeeper</h2>
+							<p>Temporary access to AWS resources</p>
+						</a>
+					</li>
+					<li class="reveal-related-products">
+						<a href="https://github.com/FINRAOS/yum-nginx-api">
+							<img src="img/yum-nginx-api_logo.svg" alt="">
+							<h2>yum-nginx-api</h2>
+							<p>GO API to upload RPMs to Yum</p>
+						</a>
+					</li>
+				</ul>
+			</section>
+		</main>
+		<footer>
+			<div id="footer-container">
+				<div id="social-links">
+					<a class="btn-icon" href="https://twitter.com/FINRA_Tech" target="_blank"><span><i class="fab fa-twitter"></i></span></a>
+					<a class="btn-icon" href="https://www.youtube.com/channel/UCXbI2-OoULM3hyQS0UR7cZQ" target="_blank"><span><i class="fab fa-youtube"></i></span></a>
+					<a class="btn-icon" href="http://finraos.github.io/" target="_blank"><span><i class="fab fa-github"></i></span></a>
+					<a class="btn-icon" href="https://www.linkedin.com/company/financial-industry-regulatory-authority/" target="_blank"><span><i class="fab fa-linkedin-in"></i></span></a>
+				</div>
+				<div id="copyright">
+					<a href="http://www.finra.org/" target="_blank"><img src="img/logo-FINRA-footer.png" alt="FINRA"></a>
+					<div>© 2019 FINRA. All rights reserved. <br>FINRA is a registered trademark of the Financial Industry Regulatory Authority, Inc.</div>
+				</div>
+			</div>
+		</footer>
+		<!-- ScrollReveal -->
+		<!-- https://github.com/jlmakes/scrollreveal -->
+		<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+		<!-- Social Share Kit JS -->
+		<!-- http://socialsharekit.com/ -->
+		<script type="text/javascript" src="js/social-share-kit.min.js"></script>
+
+		<script src="js/scroll.js"></script>
+		<script src="js/social.js"></script>
+		<!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<!-- Magnific Popup core JS file -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+		<script>
+            $(document).ready(function() {
+                $('.popup-youtube').magnificPopup({
+                    disableOn: 700,
+                    type: 'iframe',
+                    mainClass: 'mfp-fade',
+                    removalDelay: 160,
+                    preloader: false,
+                    fixedContentPos: false
+                });
+            });
+		</script>
+	</body>
+</html>

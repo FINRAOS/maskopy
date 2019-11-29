@@ -1,0 +1,126 @@
+{% import "partials/language.html" as lang with context %}
+<footer class="md-footer">
+  {% if page.previous_page or page.next_page %}
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        {% if page.previous_page %}
+          <a href="{{ page.previous_page.url }}" title="{{ page.previous_page.title }}" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  {{ lang.t("footer.previous") }}
+                </span>
+                {{ page.previous_page.title }}
+              </span>
+            </div>
+          </a>
+        {% endif %}
+        {% if page.next_page %}
+          <a href="{{ page.next_page.url }}" title="{{ page.next_page.title }}" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  {{ lang.t("footer.next") }}
+                </span>
+                {{ page.next_page.title }}
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        {% endif %}
+      </nav>
+    </div>
+  {% endif %}
+
+
+</footer>
+
+<div style="background: #212121;">
+  <div id="footer" >
+    <div id="footer-container">
+      <div id="social-links">
+        <a class="btn-icon" href="https://twitter.com/FINRA_Tech" target="_blank"><span><i class="fab fa-twitter"></i></span></a>
+        <a class="btn-icon" href="https://www.youtube.com/channel/UCXbI2-OoULM3hyQS0UR7cZQ" target="_blank"><span><i class="fab fa-youtube"></i></span></a>
+        <a class="btn-icon" href="http://finraos.github.io/" target="_blank"><span><i class="fab fa-github"></i></span></a>
+        <a class="btn-icon" href="https://www.linkedin.com/company/financial-industry-regulatory-authority/" target="_blank"><span><i class="fab fa-linkedin-in"></i></span></a>
+      </div>
+      <div id="copyright">
+        <a href="http://www.finra.org/" target="_blank"><img src="/maskopy/img/logo-FINRA-footer.png" alt="FINRA"></a>
+
+        <div>© 2019 FINRA. All rights reserved. <br>FINRA is a registered trademark of the Financial Industry Regulatory Authority, Inc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  #footer-container{
+    padding: 2em 50px;
+    flex: 1;
+    /*height: 100%;*/
+    /*padding: 0 50px;*/
+    /*position: relative;*/
+    /*max-width: 1440px;*/
+    text-align: center;
+
+  }
+
+  #footer{
+    font-size: .625rem;
+    position: relative;
+    background: #212121;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: rgba(255,255,255,0.85);
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+
+  #footer::after{
+    background: linear-gradient(135deg, #5739AC 0%, rgba(56,86,169,0) 50%),linear-gradient(315deg, #278F99 0%, rgba(56,86,169,0) 50%);
+  }
+
+  #social-links a span {
+    font-size: 2rem;
+  }
+
+  #social-links a span {
+    border-color: transparent;
+    font-size: 2rem;
+    padding: 0 0.5em;
+  }
+
+
+  #copyright img {
+    margin: 0 4em 0 0;
+    height: 30px;
+  }
+
+
+  @media (min-width: 840px) {
+    #footer-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #copyright{
+      display: flex;
+      order: 1;
+      margin-top: 0;
+      padding-left: 50px;
+      text-align: left;
+    }
+
+    #social-links {
+      order: 2;
+    }
+  }
+
+</style>

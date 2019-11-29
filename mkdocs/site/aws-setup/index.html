@@ -1,0 +1,903 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="User manual and documentation for Maskopy">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.5.4">
+    
+    
+      
+        <title>AWS Setup - Maskopy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.js"></script>
+    
+    
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <a href="#source-account-setup" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header style="background-color: #3856A9" class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a style="padding:4px 8px;" target="_parent" href=".." title="Maskopy" class="md-header-nav__button md-logo">
+          
+            <img src="../assets/images/maskopy.svg" width="32" height="32">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Maskopy
+              </span>
+              <span class="md-header-nav__topic">
+                AWS Setup
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+<nav class="md-tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." title="Overview" class="md-tabs__link md-tabs__link--active">
+        Overview
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <img src="../assets/images/maskopy.svg" width="24" height="24">
+      
+    </span>
+    Maskopy
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../quickstart/" title="Quick Start" class="md-nav__link">
+      Quick Start
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        AWS Setup
+      </label>
+    
+    <a href="./" title="AWS Setup" class="md-nav__link md-nav__link--active">
+      AWS Setup
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Contents </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-account-setup" title="Source Account setup" class="md-nav__link">
+    Source Account setup
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials" title="Step 1 : Export AWS credentials" class="md-nav__link">
+    Step 1 : Export AWS credentials
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-kms-key" title="Step 2 : Create KMS Key" class="md-nav__link">
+    Step 2 : Create KMS Key
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#staging-account-setup" title="Staging Account setup" class="md-nav__link">
+    Staging Account setup
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials_1" title="Step 1 : Export AWS credentials" class="md-nav__link">
+    Step 1 : Export AWS credentials
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-security-groups" title="Step 2 : Create Security Groups" class="md-nav__link">
+    Step 2 : Create Security Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-create-an-ecr-repository-build-and-push-common-image" title="Step 3 : Create an ECR repository, build and push common image." class="md-nav__link">
+    Step 3 : Create an ECR repository, build and push common image.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-an-sqs-queue" title="Step 4 : Create an sqs queue." class="md-nav__link">
+    Step 4 : Create an sqs queue.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maskopy-deployment" title="Maskopy Deployment" class="md-nav__link">
+    Maskopy Deployment
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials_2" title="Step 1 : Export AWS credentials." class="md-nav__link">
+    Step 1 : Export AWS credentials.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-export-environment-variables" title="Step 2 : Export environment variables." class="md-nav__link">
+    Step 2 : Export environment variables.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-deploy-lambda-functions-and-step-function" title="Step 3 : Build and deploy lambda functions and step function." class="md-nav__link">
+    Step 3 : Build and deploy lambda functions and step function.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../iam-roles/" title="AWS IAM Role Setup" class="md-nav__link">
+      AWS IAM Role Setup
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../configurations/" title="Configurations" class="md-nav__link">
+      Configurations
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Contents </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-account-setup" title="Source Account setup" class="md-nav__link">
+    Source Account setup
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials" title="Step 1 : Export AWS credentials" class="md-nav__link">
+    Step 1 : Export AWS credentials
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-kms-key" title="Step 2 : Create KMS Key" class="md-nav__link">
+    Step 2 : Create KMS Key
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#staging-account-setup" title="Staging Account setup" class="md-nav__link">
+    Staging Account setup
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials_1" title="Step 1 : Export AWS credentials" class="md-nav__link">
+    Step 1 : Export AWS credentials
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-security-groups" title="Step 2 : Create Security Groups" class="md-nav__link">
+    Step 2 : Create Security Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-create-an-ecr-repository-build-and-push-common-image" title="Step 3 : Create an ECR repository, build and push common image." class="md-nav__link">
+    Step 3 : Create an ECR repository, build and push common image.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-an-sqs-queue" title="Step 4 : Create an sqs queue." class="md-nav__link">
+    Step 4 : Create an sqs queue.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maskopy-deployment" title="Maskopy Deployment" class="md-nav__link">
+    Maskopy Deployment
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-aws-credentials_2" title="Step 1 : Export AWS credentials." class="md-nav__link">
+    Step 1 : Export AWS credentials.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-export-environment-variables" title="Step 2 : Export environment variables." class="md-nav__link">
+    Step 2 : Export environment variables.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-deploy-lambda-functions-and-step-function" title="Step 3 : Build and deploy lambda functions and step function." class="md-nav__link">
+    Step 3 : Build and deploy lambda functions and step function.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>AWS Setup</h1>
+                
+                <p>In this section, we will cover the setup that is required in the AWS accounts.</p>
+<h3 id="source-account-setup">Source Account setup<a class="headerlink" href="#source-account-setup" title="Permanent link">&para;</a></h3>
+<h4 id="step-1-export-aws-credentials">Step 1 : Export AWS credentials<a class="headerlink" href="#step-1-export-aws-credentials" title="Permanent link">&para;</a></h4>
+<p>Export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from source account and run in a terminal</p>
+<h4 id="step-2-create-kms-key">Step 2 : Create KMS Key<a class="headerlink" href="#step-2-create-kms-key" title="Permanent link">&para;</a></h4>
+<p>This step creates a customer managed kms key and sets the cross account policies.
+The parameters passed are exported into environment variables.
+Replace the SOURCE_ACCOUNT_ID and STAGING_ACCOUNT_ID in below command to Source and Staging AWS account numbers.</p>
+<div class="codehilite"><pre><span></span>./deploy/keys/deploy.sh -l LAMBDA_MASKOPY -r &lt;AWS_REGION&gt; -s &lt;SOURCE_ACCOUNT_ID&gt; -t &lt;STAGING_ACCOUNT_ID&gt;
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Env Variable</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-l</td>
+<td>LAMBDA_ROLE_NAME</td>
+<td>Name of lambda execution role in staging account</td>
+<td>LAMBDA_MASKOPY</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>AWS_REGION</td>
+<td>AWS region</td>
+<td>us-east-1</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>SOURCE_ACCOUNT_ID</td>
+<td>AWS Source Account Number</td>
+<td>123456789011</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>STAGING_ACCOUNT_ID</td>
+<td>AWS Staging Account Number</td>
+<td>123456789012</td>
+</tr>
+</tbody>
+</table>
+<h3 id="staging-account-setup">Staging Account setup<a class="headerlink" href="#staging-account-setup" title="Permanent link">&para;</a></h3>
+<h4 id="step-1-export-aws-credentials_1">Step 1 : Export AWS credentials<a class="headerlink" href="#step-1-export-aws-credentials_1" title="Permanent link">&para;</a></h4>
+<p>Export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from staging account and run in a terminal.</p>
+<h4 id="step-2-create-security-groups">Step 2 : Create Security Groups<a class="headerlink" href="#step-2-create-security-groups" title="Permanent link">&para;</a></h4>
+<p>This script creates a cloudformation stack named "MASKOPY-security-group" with the json template in sg-cf.json.
+The stack creates 2 SGs named MASKOPY-app and MASKOPY-db with inbound and outbound rules as mentioned in sg-cf.json.</p>
+<div class="codehilite"><pre><span></span>./deploy/security_groups/deploy.sh -i <span class="m">0</span>.0.0.0/0 -r &lt;AWS_REGION&gt; -v &lt;STAGING-VPC-ID&gt;
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Env Variable</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-i</td>
+<td>CIDR_RANGE</td>
+<td>The lambdas assume source account role by getting temporary credentials from AWS sts. This cidr range is added to the outbound rules to establish sts connection.</td>
+<td>0.0.0.0/0</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>AWS_REGION</td>
+<td>AWS region</td>
+<td>us-east-1</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>VPC_ID</td>
+<td>AWS Staging VPC ID</td>
+<td>vpc-123456</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-3-create-an-ecr-repository-build-and-push-common-image">Step 3 : Create an ECR repository, build and push common image.<a class="headerlink" href="#step-3-create-an-ecr-repository-build-and-push-common-image" title="Permanent link">&para;</a></h4>
+<p>This script creates an ECR repo named 'maskopy'. This repo hosts the image used by fargate task that obfuscates the data.</p>
+<div class="codehilite"><pre><span></span>./deploy/ecr/create_ecr.sh -r &lt;AWS_REGION&gt;
+</pre></div>
+
+<p>This will build a docker image with postgresql and basic tools.
+<div class="codehilite"><pre><span></span>./docker/postgres/build-image.sh -a &lt;STAGING_ACCOUNT_ID&gt; -r &lt;AWS_REGION&gt;
+</pre></div></p>
+<p>Pushing the image built in above step to ECR.
+<div class="codehilite"><pre><span></span>./docker/postgres/push-image.sh -a &lt;STAGING_ACCOUNT_ID&gt; -r &lt;AWS_REGION&gt;
+</pre></div></p>
+<h4 id="step-4-create-an-sqs-queue">Step 4 : Create an sqs queue.<a class="headerlink" href="#step-4-create-an-sqs-queue" title="Permanent link">&para;</a></h4>
+<p>This queue is used by the Step Function to publish results of either success or failure.
+Once the message is posted in the queue, there can be custom implementations to email the results of the execution.
+Alternative implementations can publish the messages to SNS.</p>
+<div class="codehilite"><pre><span></span>./deploy/sqs/create_sqs.sh -n &lt;SQS_QUEUE_NAME&gt; -r &lt;AWS_REGION&gt;
+</pre></div>
+
+<h2 id="maskopy-deployment">Maskopy Deployment<a class="headerlink" href="#maskopy-deployment" title="Permanent link">&para;</a></h2>
+<p>This step builds and deploys the lambda functions and Step function to the staging environment.</p>
+<h4 id="step-1-export-aws-credentials_2">Step 1 : Export AWS credentials.<a class="headerlink" href="#step-1-export-aws-credentials_2" title="Permanent link">&para;</a></h4>
+<p>Export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from staging account and run in a terminal.</p>
+<h4 id="step-2-export-environment-variables">Step 2 : Export environment variables.<a class="headerlink" href="#step-2-export-environment-variables" title="Permanent link">&para;</a></h4>
+<p>Export the following environment variables into the shell. Refer to the description and examples of all the variables in the table below.
+    <div class="codehilite"><pre><span></span>    <span class="nb">export</span> <span class="nv">AWS_REGION</span><span class="o">=</span><span class="s2">&quot;&lt;AWS_REGION&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">CROSS_ACCOUNT_ROLE</span><span class="o">=</span><span class="s2">&quot;arn:aws:iam::&lt;SOURCE_ACCOUNT_ID&gt;:role/Xacnt_APP_MASKOPY&quot;</span>
+    <span class="nb">export</span> <span class="nv">COST_CENTER</span><span class="o">=</span><span class="s2">&quot;&lt;COST_CENTER_FOR_BILLING&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">DESTINATION_ACCOUNT_ID</span><span class="o">=</span><span class="s2">&quot;&lt;STAGING_ACCOUNT_ID&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">FARGATE_SECURITY_GROUP</span><span class="o">=</span><span class="s2">&quot;&lt;ID_OF_LAMBDA_SG&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">FARGATE_SUBNET0</span><span class="o">=</span><span class="s2">&quot;&lt;STAGING_PRIVATE_SUBNET_ID&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">FARGATE_SUBNET1</span><span class="o">=</span><span class="s2">&quot;&lt;STAGING_PRIVATE_SUBNET_ID&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">LAMBDA_BUCKET_LOCATION</span><span class="o">=</span><span class="s2">&quot;&lt;S3_BUCKET_NAME&gt;/MASKOPY&quot;</span>
+    <span class="nb">export</span> <span class="nv">LAMBDA_ROLE</span><span class="o">=</span><span class="s2">&quot;LAMBDA_MASKOPY&quot;</span>
+    <span class="nb">export</span> <span class="nv">LAMBDA_SECURITY_GROUP</span><span class="o">=</span><span class="s2">&quot;&lt;ID_OF_LAMBDA_SG&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">LAMBDA_SUBNET_LIST</span><span class="o">=</span><span class="s2">&quot;&lt;STAGING_PRIVATE_SUBNET_ID_1,STAGING_PRIVATE_SUBNET_ID_2&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">ORIGINAL_KMS_KEY</span><span class="o">=</span><span class="s2">&quot;arn:aws:kms:&lt;AWS_REGION&gt;:&lt;STAGING_ACCOUNT_ID&gt;:key/key_uuid&quot;</span>
+    <span class="nb">export</span> <span class="nv">RDS_SUBNET_GROUP</span><span class="o">=</span><span class="s2">&quot;STAGING_RDS_SUBNET_GROUP_NAME&quot;</span>
+    <span class="nb">export</span> <span class="nv">RDS_SECURITY_GROUP</span><span class="o">=</span><span class="s2">&quot;STAGING_RDS_SECURITY_GROUP&quot;</span>
+    <span class="nb">export</span> <span class="nv">SQS_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;SQS_QUEUE_NAME&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">STAGING_ACCOUNT_ID</span><span class="o">=</span><span class="s2">&quot;&lt;STAGING_ACCOUNT_ID&gt;&quot;</span>
+    <span class="nb">export</span> <span class="nv">STAGING_KEY</span><span class="o">=</span><span class="s2">&quot;arn:aws:kms:&lt;AWS_REGION&gt;:&lt;STAGING_ACCOUNT_ID&gt;:alias/aws/rds&quot;</span>
+</pre></div></p>
+<table>
+<thead>
+<tr>
+<th>Env Variable</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS_REGION</td>
+<td>aws region</td>
+<td>us-east-1</td>
+</tr>
+<tr>
+<td>CROSS_ACCOUNT_ROLE</td>
+<td>Arn of cross account role in source account. The lambdas will be assuming this role to perform actions in Source Account. This role is passed to multiple lambda functions as an env variable.</td>
+<td>arn:aws:iam::123456789011:role/Xacnt_APP_MASKOPY</td>
+</tr>
+<tr>
+<td>COST_CENTER</td>
+<td>All the lambda functions are tagged with "Cost Center" for billing purposes</td>
+<td>abc123</td>
+</tr>
+<tr>
+<td>DESTINATION_ACCOUNT_ID</td>
+<td>12 digit AWS account id where the final snapshot will be copied to.</td>
+<td>123456789012</td>
+</tr>
+<tr>
+<td>FARGATE_SECURITY_GROUP</td>
+<td>Security group associated to the fargate task. We have created MASKOPY-app in the above steps. Use SG-id of MASKOPY-app.</td>
+<td>sg-01234567891234</td>
+</tr>
+<tr>
+<td>FARGATE_SUBNET0</td>
+<td>Private subnet id in one availability zone to be associated to the fargate task.</td>
+<td>subnet-01234567891234</td>
+</tr>
+<tr>
+<td>FARGATE_SUBNET1</td>
+<td>Private subnet id in another availability zone to be associated to the fargate task.</td>
+<td>subnet-12340123456789</td>
+</tr>
+<tr>
+<td>LAMBDA_BUCKET_LOCATION</td>
+<td>S3 bucket location where lambda code is zipped and staged.</td>
+<td>my-obfuscation-bucket-name/MASKOPY</td>
+</tr>
+<tr>
+<td>LAMBDA_ROLE</td>
+<td>Role to be associated to the lambda functions.</td>
+<td>LAMBDA_MASKOPY</td>
+</tr>
+<tr>
+<td>LAMBDA_SECURITY_GROUP</td>
+<td>Security group associated with the lambda functions.</td>
+<td>sg-01234567891234</td>
+</tr>
+<tr>
+<td>LAMBDA_SUBNET_LIST</td>
+<td>Comma separated private subnet ids associated with the lambda functions.</td>
+<td>subnet-01234567891234,subnet-12340123456789</td>
+</tr>
+<tr>
+<td>ORIGINAL_KMS_KEY</td>
+<td>Kms key arn in the source account.</td>
+<td>arn:aws:kms:us-east-1:123456789011:key/00000000-1111-aaaa-bbbb-0123456789012</td>
+</tr>
+<tr>
+<td>RDS_SUBNET_GROUP</td>
+<td>RDS Subnet group name to be associated with the RDS in staging account.</td>
+<td>maskopy-db-subnet</td>
+</tr>
+<tr>
+<td>RDS_SECURITY_GROUP</td>
+<td>RDS Security group to be associated with RDS in staging account.</td>
+<td>default</td>
+</tr>
+<tr>
+<td>SQS_NAME</td>
+<td>SQS name to publish results of the execution.</td>
+<td>maskopy-queue</td>
+</tr>
+<tr>
+<td>STAGING_ACCOUNT_ID</td>
+<td>12 digit AWS account id of the staging account.</td>
+<td>123456789012</td>
+</tr>
+<tr>
+<td>STAGING_KEY</td>
+<td>AWS managed RDS kms key in staging account.</td>
+<td>arn:aws:kms:us-east-1:123456789012:alias/aws/rds</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-3-build-and-deploy-lambda-functions-and-step-function">Step 3 : Build and deploy lambda functions and step function.<a class="headerlink" href="#step-3-build-and-deploy-lambda-functions-and-step-function" title="Permanent link">&para;</a></h4>
+<p>This script builds the lambda functions with python3 using requirements.txt and zips the lambda artifacts.
+The artifacts are copied to S3 bucket and pulled during lambda execution. The script then deploys the lambdas and step function state machine.</p>
+<p><div class="codehilite"><pre><span></span>./deploy/deploy.sh
+</pre></div>
+At the end of the deployment, you would see two cloudformation stacks created in the Staging account.</p>
+<p>Cloudformation stack name:
+- MASKOPY-stepfunction
+- MASKOPY-lambda</p>
+<p><a href="../images/cfn.png"><img alt="Cloudformation Stacks" src="../images/cfn.png" /></a></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../quickstart/" title="Quick Start" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Quick Start
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../iam-roles/" title="AWS IAM Role Setup" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                AWS IAM Role Setup
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+
+
+</footer>
+
+<div style="background: #212121;">
+  <div id="footer" >
+    <div id="footer-container">
+      <div id="social-links">
+        <a class="btn-icon" href="https://twitter.com/FINRA_Tech" target="_blank"><span><i class="fab fa-twitter"></i></span></a>
+        <a class="btn-icon" href="https://www.youtube.com/channel/UCXbI2-OoULM3hyQS0UR7cZQ" target="_blank"><span><i class="fab fa-youtube"></i></span></a>
+        <a class="btn-icon" href="http://finraos.github.io/" target="_blank"><span><i class="fab fa-github"></i></span></a>
+        <a class="btn-icon" href="https://www.linkedin.com/company/financial-industry-regulatory-authority/" target="_blank"><span><i class="fab fa-linkedin-in"></i></span></a>
+      </div>
+      <div id="copyright">
+        <a href="http://www.finra.org/" target="_blank"><img src="/maskopy/img/logo-FINRA-footer.png" alt="FINRA"></a>
+
+        <div>© 2019 FINRA. All rights reserved. <br>FINRA is a registered trademark of the Financial Industry Regulatory Authority, Inc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  #footer-container{
+    padding: 2em 50px;
+    flex: 1;
+    /*height: 100%;*/
+    /*padding: 0 50px;*/
+    /*position: relative;*/
+    /*max-width: 1440px;*/
+    text-align: center;
+
+  }
+
+  #footer{
+    font-size: .625rem;
+    position: relative;
+    background: #212121;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: rgba(255,255,255,0.85);
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+
+  #footer::after{
+    background: linear-gradient(135deg, #5739AC 0%, rgba(56,86,169,0) 50%),linear-gradient(315deg, #278F99 0%, rgba(56,86,169,0) 50%);
+  }
+
+  #social-links a span {
+    font-size: 2rem;
+  }
+
+  #social-links a span {
+    border-color: transparent;
+    font-size: 2rem;
+    padding: 0 0.5em;
+  }
+
+
+  #copyright img {
+    margin: 0 4em 0 0;
+    height: 30px;
+  }
+
+
+  @media (min-width: 840px) {
+    #footer-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #copyright{
+      display: flex;
+      order: 1;
+      margin-top: 0;
+      padding-left: 50px;
+      text-align: left;
+    }
+
+    #social-links {
+      order: 2;
+    }
+  }
+
+</style>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.js"></script>
+      
+      <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
