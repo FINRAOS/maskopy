@@ -1,0 +1,120 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Security Group Creation for Fargate and RDS",
+  "Parameters": {
+    "vpcID": {
+      "Description": "The vpcID for the vpc that the security group should be applied to",
+      "Type": "String"
+    },
+    "cidr": {
+      "Description": "CIDR range of VPC endpoint.",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "MASKOPYAPP": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": "MASKOPY-app",
+        "GroupDescription": "Security group for Maskopy app",
+        "VpcId": { "Ref": "vpcID" },
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIp": { "Ref": "cidr" }
+          }
+        ]
+      }
+    },
+    "MASKOPYDB": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": "MASKOPY-db",
+        "GroupDescription": "Security group for Maskopy db",
+        "VpcId": { "Ref": "vpcID" }
+      }
+    },
+    "OutboundRule00": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": 2484,
+        "ToPort": 2484,
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYDB",
+            "GroupId"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYAPP",
+            "GroupId"
+          ]
+        }
+      }
+    },
+    "OutboundRule01": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": 5432,
+        "ToPort": 5432,
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYDB",
+            "GroupId"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYAPP",
+            "GroupId"
+          ]
+        }
+      }
+    },
+    "InboundRule02": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": 2484,
+        "ToPort": 2484,
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYAPP",
+            "GroupId"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYDB",
+            "GroupId"
+          ]
+        }
+      }
+    },
+    "InboundRule03": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": 5432,
+        "ToPort": 5432,
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYAPP",
+            "GroupId"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "MASKOPYDB",
+            "GroupId"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Cloudformation template for creating State Machine",
+  "Parameters": {
+    "StepfunctionRoleName": {
+      "Description": "The name of role to execute step function resources.",
+      "Type": "String",
+      "MinLength": 1
+    }
+  },
+  "Resources": {
+    "StateMachine01": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "StateMachineName": "MASKOPY-CLIENT-StateMachine",
+        "RoleArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:iam::",
+              { "Ref": "AWS::AccountId" },
+              ":role/",
+              { "Ref": "StepfunctionRoleName"}
+            ]
+          ]
+        },
+        "DefinitionString": "{{STATEMACHINE_DEF}}"
+      }
+    }
+  }
+}
