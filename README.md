@@ -2,10 +2,11 @@
 
 <br/>
 
+## Overview:
+
 Maskopy solution is to Copy and Obfuscate Production Data to Target Environments in AWS. 
 It uses AWS Serverless services, Step functions, Lambda and Fargate.
 
-<br/>
 
 ## Features:
 ### Simplified Copy and Obfuscation
