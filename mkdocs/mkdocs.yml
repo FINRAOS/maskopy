@@ -65,6 +65,6 @@ pages:
   - Overview: index.md
   - Quick Start: quickstart.md
   - AWS Setup: aws-setup.md
-  - AWS IAM Role Setup: iam-roles.md
+  - IAM Role Setup: iam-roles.md
   - Configurations: configurations.md
 
