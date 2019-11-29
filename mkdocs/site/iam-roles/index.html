@@ -1,0 +1,1068 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="User manual and documentation for Maskopy">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.5.4">
+    
+    
+      
+        <title>AWS IAM Role Setup - Maskopy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.js"></script>
+    
+    
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <a href="#aws-iam-roles-setup" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header style="background-color: #3856A9" class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a style="padding:4px 8px;" target="_parent" href=".." title="Maskopy" class="md-header-nav__button md-logo">
+          
+            <img src="../assets/images/maskopy.svg" width="32" height="32">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Maskopy
+              </span>
+              <span class="md-header-nav__topic">
+                AWS IAM Role Setup
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+<nav class="md-tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." title="Overview" class="md-tabs__link md-tabs__link--active">
+        Overview
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <img src="../assets/images/maskopy.svg" width="24" height="24">
+      
+    </span>
+    Maskopy
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../quickstart/" title="Quick Start" class="md-nav__link">
+      Quick Start
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../aws-setup/" title="AWS Setup" class="md-nav__link">
+      AWS Setup
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        AWS IAM Role Setup
+      </label>
+    
+    <a href="./" title="AWS IAM Role Setup" class="md-nav__link md-nav__link--active">
+      AWS IAM Role Setup
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Contents </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iam-roles" title="IAM Roles" class="md-nav__link">
+    IAM Roles
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-account" title="Source Account" class="md-nav__link">
+    Source Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-role" title="IAM role" class="md-nav__link">
+    IAM role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staging-account" title="Staging account" class="md-nav__link">
+    Staging account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lambda-and-step-function-role" title="Lambda and Step function role" class="md-nav__link">
+    Lambda and Step function role
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updates-to-lambda-role-after-kms-keys-are-created" title="Updates to Lambda Role after KMS Keys are created" class="md-nav__link">
+    Updates to Lambda Role after KMS Keys are created
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fargate-service-role" title="Fargate service role" class="md-nav__link">
+    Fargate service role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-relationship" title="Trust Relationship" class="md-nav__link">
+    Trust Relationship
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-account_1" title="Source Account" class="md-nav__link">
+    Source Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-cross-account-role-in-source-account" title="Trust Relationship for Cross Account Role in Source Account" class="md-nav__link">
+    Trust Relationship for Cross Account Role in Source Account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-lambda-role" title="Trust Relationship for Lambda role" class="md-nav__link">
+    Trust Relationship for Lambda role
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-ecs-service-role" title="Trust Relationship for ECS Service role" class="md-nav__link">
+    Trust Relationship for ECS Service role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destination-account" title="Destination Account" class="md-nav__link">
+    Destination Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maskopy-invoker-role" title="Maskopy Invoker Role" class="md-nav__link">
+    Maskopy Invoker Role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../configurations/" title="Configurations" class="md-nav__link">
+      Configurations
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Contents </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iam-roles" title="IAM Roles" class="md-nav__link">
+    IAM Roles
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-account" title="Source Account" class="md-nav__link">
+    Source Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-role" title="IAM role" class="md-nav__link">
+    IAM role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staging-account" title="Staging account" class="md-nav__link">
+    Staging account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lambda-and-step-function-role" title="Lambda and Step function role" class="md-nav__link">
+    Lambda and Step function role
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updates-to-lambda-role-after-kms-keys-are-created" title="Updates to Lambda Role after KMS Keys are created" class="md-nav__link">
+    Updates to Lambda Role after KMS Keys are created
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fargate-service-role" title="Fargate service role" class="md-nav__link">
+    Fargate service role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-relationship" title="Trust Relationship" class="md-nav__link">
+    Trust Relationship
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-account_1" title="Source Account" class="md-nav__link">
+    Source Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-cross-account-role-in-source-account" title="Trust Relationship for Cross Account Role in Source Account" class="md-nav__link">
+    Trust Relationship for Cross Account Role in Source Account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-lambda-role" title="Trust Relationship for Lambda role" class="md-nav__link">
+    Trust Relationship for Lambda role
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trust-relationship-for-ecs-service-role" title="Trust Relationship for ECS Service role" class="md-nav__link">
+    Trust Relationship for ECS Service role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destination-account" title="Destination Account" class="md-nav__link">
+    Destination Account
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maskopy-invoker-role" title="Maskopy Invoker Role" class="md-nav__link">
+    Maskopy Invoker Role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="aws-iam-roles-setup">AWS IAM Roles Setup<a class="headerlink" href="#aws-iam-roles-setup" title="Permanent link">&para;</a></h1>
+<p>AWS IAM role is required to run the Maskopy solution's Step functions, Lambda and Fargate tasks. Since Maskopy needs to access resources like RDS snapshots from a source account that is different than its current account, it needs Cross account access.
+We will look at how to setup these IAM roles in the source and staging accounts.
+Make a note of the account IDs for Source and staging accounts since they will be used in the IAM roles.</p>
+<h2 id="iam-roles">IAM Roles<a class="headerlink" href="#iam-roles" title="Permanent link">&para;</a></h2>
+<h3 id="source-account">Source Account<a class="headerlink" href="#source-account" title="Permanent link">&para;</a></h3>
+<p>Create the Cross-Account role, <code>XACNT_MASKOPY</code> in the <strong>Source Account</strong> to share and copy snapshots from Source Account to Staging Account. The purpose of this role is to copy RDS snapshots to share with the staging account. It also require delete permissions on RDS snapshots to cleanup the transient snapshot copies that were made during the maskopy execution. The delete permission is limited to only RDS snapshots with the prefix <em>maskopy</em>. This ensures that this role allows maskopy to delete only the snapshots that are created by maskopy.</p>
+<p><strong>Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOUNT> with source account number.</strong></p>
+<h4 id="iam-role">IAM role<a class="headerlink" href="#iam-role" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+       <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+       <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+           <span class="p">{</span>
+               <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;KMSandLogs&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                   <span class="s2">&quot;logs:CreateLogStream&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:List*&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:Get*&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:CreateAlias&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:Describe*&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:CreateKey&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:CreateGrant&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;logs:CreateLogGroup&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;logs:PutLogEvents&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;kms:ReEncrypt*&quot;</span>
+               <span class="p">],</span>
+               <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+           <span class="p">},</span>
+           <span class="p">{</span>
+               <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;RDSSnapshotPolicy&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                   <span class="s2">&quot;rds:ListTagsForResource&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;rds:DescribeDBSnapshots&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;rds:CopyDBSnapshot&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;rds:ModifyDBSnapshotAttribute&quot;</span>
+               <span class="p">],</span>
+               <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:rds:*:&lt;SOURCE-ACCOUNT&gt;:*:*&quot;</span>
+           <span class="p">},</span>
+           <span class="p">{</span>
+               <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;RDSDeletePolicy&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+               <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                   <span class="s2">&quot;rds:DeleteDBSnapshot&quot;</span>
+               <span class="p">],</span>
+               <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:rds:*:&lt;SOURCE-ACCOUNT&gt;:*:maskopy*&quot;</span>
+           <span class="p">}</span>
+       <span class="p">]</span>
+ <span class="p">}</span>
+</pre></div>
+
+<h3 id="staging-account">Staging account<a class="headerlink" href="#staging-account" title="Permanent link">&para;</a></h3>
+<h4 id="lambda-and-step-function-role">Lambda and Step function role<a class="headerlink" href="#lambda-and-step-function-role" title="Permanent link">&para;</a></h4>
+<p>Create an IAM role - <code>LAMBDA_MASKOPY</code> for Maskopy's Lambda and Step function. This role will be created in the staging account.</p>
+<p>Add below AWS Managed policy for Lambda
+ - <code>AWSLambdaExecute</code>
+ - <code>AWSLambdaRole</code>
+ - Below is a custom policy that is required to access other services such as ECS/Fargate, KMS, RDS.</p>
+<p><strong>Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOUNT> with source account number.</strong></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;MultiplePolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;events:Put*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;events:DescribeRule&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:DescribeDBSnapshots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:CreateCluster&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ec2:DeleteNetworkInterface&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:DescribeDBParameterGroups&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:DeregisterTaskDefinition&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ec2:CreateNetworkInterface&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ec2:DescribeNetworkInterfaces&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:RegisterTaskDefinition&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:DescribeDBInstances&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:DescribeOptionGroups&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:AddTagsToResource&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;RDSPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;rds:CreateDBSnapshot&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:RestoreDBInstanceFromDBSnapshot&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:rds:*:*:*:*maskopy*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:rds:*:*:*:default*&quot;</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;PassRolePolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;iam:PassRole&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:iam::&lt;STAGING-ACCOUNT&gt;:role/*MASKOPY*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;RDSMaskopyPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;rds:*&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:rds:*:*:db:maskopy*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:rds:*:*:snapshot:*maskopy*&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h5 id="updates-to-lambda-role-after-kms-keys-are-created">Updates to Lambda Role after KMS Keys are created<a class="headerlink" href="#updates-to-lambda-role-after-kms-keys-are-created" title="Permanent link">&para;</a></h5>
+<p>Skip this step if you have not created KMS Keys in Source account. KMS keys creation is described here.
+Once the KMS keys are created in the Source account, Note the KMS Key ID. It needs to be replaced in the below Policy.
+Also replace Source account, staging account, Staging-DefaultRDSKMSKeyID.</p>
+<p>Update the LAMBDA_MASKOPY IAM role and modify with below policy.</p>
+<p><strong>Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOUNT> with source account number.</strong></p>
+<div class="codehilite"><pre><span></span>        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;KMSPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;kms:RevokeGrant&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:CreateGrant&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:ListGrants&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:kms:us-east-1:&lt;STAGING-ACCOUNT&gt;:key/&lt;STAGING-DefaultRDSKMSKey&gt;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:kms:us-east-1:&lt;SOURCE-ACCOUNT&gt;:key/&lt;SOURCE-KMSKeyID&gt;&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Condition&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;Bool&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;kms:GrantIsForAWSResource&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="err">,</span>
+         <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;MaskopyLambdaPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;sts:AssumeRole&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:Decrypt&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:RunTask&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:Encrypt&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sqs:SendMessage&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:DescribeKey&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:StartTask&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:DeleteCluster&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:RetireGrant&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:DescribeTasks&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecs:DescribeClusters&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:iam::*:role/Xacnt_MASKOPY&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:kms:us-east-1:&lt;STAGING-ACCOUNT&gt;:key/&lt;STAGING-DefaultRDSKMSKey&gt;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:kms:us-east-1:&lt;SOURCE-ACCOUNT&gt;:key/&lt;SOURCE-KMSKeyID&gt;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:ecs:*:&lt;STAGING-ACCOUNT&gt;:task-definition/*:*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:ecs:*:&lt;STAGING-ACCOUNT&gt;:cluster/*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:ecs:*:&lt;STAGING-ACCOUNT&gt;:task/*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:sqs:*:*:*&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+</pre></div>
+
+<h4 id="fargate-service-role">Fargate service role<a class="headerlink" href="#fargate-service-role" title="Permanent link">&para;</a></h4>
+<p>This IAM role - <code>ECS_MASKOPY</code> is the service role that is applied to the Fargate tasks created by maskopy.</p>
+<ol>
+<li>Attach the <code>AmazonEC2ContainerServiceRole</code> AWS managed policy to this role to allow access to ECS and Fargate resources.</li>
+<li>Below is the custom policy that needs to be applied to the Fargate service role in order to access to ECR, S3, logs and RDS.</li>
+</ol>
+<p>Access to ECR needed to pull the docker images from ECR. Access to S3 is needed to pull the obfuscation scripts from S3.
+Access to RDS is required to access and update RDS instances during the obfuscation process.</p>
+<p><strong>Replace \<STAGING-ACCOUNT> with staging account number. Replace \<RDS-DEFAULTKMSKEYID> with the RDS Default KMS KeyID</strong></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;ecr:GetDownloadUrlForLayer&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:BatchGetImage&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:DescribeImages&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:Get*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:GetAuthorizationToken&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:DescribeRepositories&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:ListTagsForResource&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:ListImages&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:List*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ecr:GetRepositoryPolicy&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;logs:CreateLogStream&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;logs:PutLogEvents&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:logs:*:*:*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;RDSPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;rds:DescribeDBSnapshots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:CopyDBSnapshot&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:DescribeDBInstances&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:ModifyDBInstance&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rds:ModifyDBSnapshotAttribute&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:rds:*:*:*:maskopy*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;KMSPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;kms:EnableKey&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:Decrypt&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:ReEncryptFrom&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:ReEncrypt*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:GenerateDataKey*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:ListKeys&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:Encrypt&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:ReEncryptTo&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:DescribeKey&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;kms:CreateGrant&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:kms:us-east-1:&lt;STAGING-ACCOUNT&gt;:key/&lt;RDS-DEFAULTKMSKeyID&gt;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="trust-relationship">Trust Relationship<a class="headerlink" href="#trust-relationship" title="Permanent link">&para;</a></h2>
+<h3 id="source-account_1">Source Account<a class="headerlink" href="#source-account_1" title="Permanent link">&para;</a></h3>
+<h4 id="trust-relationship-for-cross-account-role-in-source-account">Trust Relationship for Cross Account Role in Source Account<a class="headerlink" href="#trust-relationship-for-cross-account-role-in-source-account" title="Permanent link">&para;</a></h4>
+<p>XACNT_MASKOPY role needs to have the trust relationship with the Maskopy's Lambda role that is running in the Staging account. Maskopy's execution role (Lambda) assumes this Cross account role created above to access resources in the source account.
+Here is the trust relationship policy.</p>
+<p><strong>Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOUNT> with source account number.</strong></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;Principal&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;AWS&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:iam::&lt;STAGING-ACCOUNT&gt;:role/LAMBDA_MASKOPY&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;sts:AssumeRole&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="trust-relationship-for-lambda-role">Trust Relationship for Lambda role<a class="headerlink" href="#trust-relationship-for-lambda-role" title="Permanent link">&para;</a></h4>
+<p>Trust relationship for the Lambda and step function role (LAMBDA_MASKOPY) needs to allow access to <code>states</code>, <code>events</code>, <code>lambda</code>, <code>sts</code> services</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+     <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+     <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+       <span class="p">{</span>
+         <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Principal&quot;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="nt">&quot;Service&quot;</span><span class="p">:</span> <span class="p">[</span>
+             <span class="s2">&quot;lambda.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;states.us-east-1.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;states.us-east-2.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;states.us-west-1.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;sts.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;states.us-west-2.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;states.amazonaws.com&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;events.amazonaws.com&quot;</span>
+           <span class="p">]</span>
+         <span class="p">},</span>
+         <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;sts:AssumeRole&quot;</span>
+       <span class="p">}</span>
+     <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="trust-relationship-for-ecs-service-role">Trust Relationship for ECS Service role<a class="headerlink" href="#trust-relationship-for-ecs-service-role" title="Permanent link">&para;</a></h4>
+<p>Apply this trust relationship for ECS_MASKOPY role.
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;Principal&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;Service&quot;</span><span class="p">:</span> <span class="s2">&quot;ec2.amazonaws.com&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;sts:AssumeRole&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div></p>
+<h2 id="destination-account">Destination Account<a class="headerlink" href="#destination-account" title="Permanent link">&para;</a></h2>
+<p>In the current release of Maskopy, the destination account and Staging account is the same.  In upcoming releases, maskopy will run in staging account and share snapshots to the destination account. It requires IAM role updates and a minor enhancement to the orchestration.</p>
+<h3 id="maskopy-invoker-role">Maskopy Invoker Role<a class="headerlink" href="#maskopy-invoker-role" title="Permanent link">&para;</a></h3>
+<p>Each Application onboarding to Maskopy should create an IAM role that allows access to invoke and use Maskopy solution. Add the <code>Application_Name</code> in the IAM role.
+Each application leveraging Maskopy will be using the Invoker IAM role to authorize itself. Maskopy checks that the caller IAM role name contains the application name. So, if Application, FooBar wants to use Maskopy, it would require an IAM role named Foobar_invoker or Maskopy_Foobar to be able to invoke Maskopy.</p>
+<p>See below the policy that is required for the Maskopy Invoker Role.</p>
+<p><strong>Replace \<ACCOUNT> with staging account number.</strong></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;MaskopyPolicy&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;states:StartExecution&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:states:*:&lt;ACCOUNT&gt;:stateMachine:maskopy*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:states:*:&lt;ACCOUNT&gt;:stateMachine:MASKOPY*&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../aws-setup/" title="AWS Setup" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                AWS Setup
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../configurations/" title="Configurations" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Configurations
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+
+
+</footer>
+
+<div style="background: #212121;">
+  <div id="footer" >
+    <div id="footer-container">
+      <div id="social-links">
+        <a class="btn-icon" href="https://twitter.com/FINRA_Tech" target="_blank"><span><i class="fab fa-twitter"></i></span></a>
+        <a class="btn-icon" href="https://www.youtube.com/channel/UCXbI2-OoULM3hyQS0UR7cZQ" target="_blank"><span><i class="fab fa-youtube"></i></span></a>
+        <a class="btn-icon" href="http://finraos.github.io/" target="_blank"><span><i class="fab fa-github"></i></span></a>
+        <a class="btn-icon" href="https://www.linkedin.com/company/financial-industry-regulatory-authority/" target="_blank"><span><i class="fab fa-linkedin-in"></i></span></a>
+      </div>
+      <div id="copyright">
+        <a href="http://www.finra.org/" target="_blank"><img src="/maskopy/img/logo-FINRA-footer.png" alt="FINRA"></a>
+
+        <div>© 2019 FINRA. All rights reserved. <br>FINRA is a registered trademark of the Financial Industry Regulatory Authority, Inc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  #footer-container{
+    padding: 2em 50px;
+    flex: 1;
+    /*height: 100%;*/
+    /*padding: 0 50px;*/
+    /*position: relative;*/
+    /*max-width: 1440px;*/
+    text-align: center;
+
+  }
+
+  #footer{
+    font-size: .625rem;
+    position: relative;
+    background: #212121;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: rgba(255,255,255,0.85);
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+
+  #footer::after{
+    background: linear-gradient(135deg, #5739AC 0%, rgba(56,86,169,0) 50%),linear-gradient(315deg, #278F99 0%, rgba(56,86,169,0) 50%);
+  }
+
+  #social-links a span {
+    font-size: 2rem;
+  }
+
+  #social-links a span {
+    border-color: transparent;
+    font-size: 2rem;
+    padding: 0 0.5em;
+  }
+
+
+  #copyright img {
+    margin: 0 4em 0 0;
+    height: 30px;
+  }
+
+
+  @media (min-width: 840px) {
+    #footer-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #copyright{
+      display: flex;
+      order: 1;
+      margin-top: 0;
+      padding-left: 50px;
+      text-align: left;
+    }
+
+    #social-links {
+      order: 2;
+    }
+  }
+
+</style>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.js"></script>
+      
+      <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
