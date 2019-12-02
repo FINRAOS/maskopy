@@ -1,0 +1,77 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+jobs:
+  build-lambda00:
+    docker:
+    - image: circleci/python:3.7
+    working_directory: ~/repo
+    environment:
+      lambda_name: "lambda/00-AuthorizeUser"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ checksum `/lambda/$lambda_name` }}-{{ checksum "/lambda/requirements.txt" }}
+        - lambda-{{ checksum `/lambda/$lambda_name` }}
+    - run: shopt -s dotglob
+    - run:
+      name: Create Zip File for Lambdas
+      command: |
+        cd lambda/$lambda_name
+        python3 -m pip install -r /lambda/requirements.txt -t .
+        zip -r $lambda_name.zip  *
+        cp *.zip /
+    - save_cache:
+      key: lambda-{{ checksum `/lambda/$lambda_name` }}-{{ checksum "/lambda/requirements.txt" }}
+      paths:
+      - /lambda/$lambda_name
+  build-lambda01:
+    docker:
+    - image: circleci/python:3.7
+    working_directory: ~/repo
+    environment:
+      lambda_name: "lambda/01-UseExistingSnapshot"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ checksum `/lambda/$lambda_name` }}-{{ checksum "/lambda/requirements.txt" }}
+        - lambda-{{ checksum `/lambda/$lambda_name` }}
+    - run: shopt -s dotglob
+    - run:
+      name: Create Zip File for Lambdas
+      command: |
+        cd lambda/$lambda_name
+        python3 -m pip install -r /lambda/requirements.txt -t .
+        zip -r $lambda_name.zip  *
+        cp *.zip /
+    - save_cache:
+      key: lambda-{{ checksum `/lambda/$lambda_name` }}-{{ checksum "/lambda/requirements.txt" }}
+      paths:
+      - /lambda/$lambda_name
+  build-final-zip:
+    docker:
+    - image: circleci/python:3.7
+    working_directory: ~/repo
+    steps:
+    - run:
+      name: Create a Zip File of Zips
+      command: |
+        mkdir /lambdas
+        cp *.zip /lambdas
+        zip -r /lambdas *
+    - store_artifacts:
+      path: /lambdas
+workflows:
+  version: 2
+  Example_Workflow:
+    jobs:
+    - build-lambda00
+    - build-lambda01
+    - build-final-zip:
+      requires:
+      - build-lambda00
+      - build-lambda01
