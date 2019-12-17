@@ -1,0 +1,448 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+jobs:
+  build-lambda00:
+    docker:
+      - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "00-AuthorizeUser"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - lambda-{{ .Branch }}-{{ checksum "lambda/00-AuthorizeUser/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+      - run: shopt -s dotglob
+      - run:
+          command: |
+            cd ~/repo/lambda/$lambda_name
+            python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+      - save_cache:
+          paths:
+            - ~/repo/lambda/$lambda_name
+          key: lambda-{{ .Branch }}-{{ checksum "lambda/00-AuthorizeUser/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+      - run:
+          command: |
+            cd ~/repo/lambda/$lambda_name
+            zip -r $lambda_name.zip  *
+            cp *.zip ~
+      - persist_to_workspace:
+          root: ~/
+          paths: 00-AuthorizeUser.zip
+  build-lambda01:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "01-UseExistingSnapshot"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/01-UseExistingSnapshot/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/01-UseExistingSnapshot/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 01-UseExistingSnapshot.zip
+  build-lambda02:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "02-CheckForSnapshotCompletion"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/02-CheckForSnapshotCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/02-CheckForSnapshotCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 02-CheckForSnapshotCompletion.zip
+  build-lambda03:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "03-ShareSnapshots"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/03-ShareSnapshots/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/03-ShareSnapshots/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 03-ShareSnapshots.zip
+  build-lambda04:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "04-CopySharedDBSnapshots"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/04-CopySharedDBSnapshots/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/04-CopySharedDBSnapshots/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 04-CopySharedDBSnapshots.zip
+  build-lambda05:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "05-CheckForDestinationSnapshotCompletion"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/05-CheckForDestinationSnapshotCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/05-CheckForDestinationSnapshotCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 05-CheckForDestinationSnapshotCompletion.zip
+  build-lambda06:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "06-RestoreDatabases"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/06-RestoreDatabases/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/06-RestoreDatabases/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 06-RestoreDatabases.zip
+  build-lambda07:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "07-CheckForRestoreCompletion"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/07-CheckForRestoreCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/07-CheckForRestoreCompletion/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 07-CheckForRestoreCompletion.zip
+  build-lambda08a:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "08a-CreateFargate"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/08a-CreateFargate/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/08a-CreateFargate/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 08a-CreateFargate.zip
+  build-lambda08b:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "08b-CreateECS"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/08b-CreateECS/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/08b-CreateECS/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 08b-CreateECS.zip
+  build-lambda09:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "09-TakeSnapshot"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/09-TakeSnapshot/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/09-TakeSnapshot/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 09-TakeSnapshot.zip
+  build-lambda10:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "10-CheckFinalSnapshotAvailability"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/10-CheckFinalSnapshotAvailability/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/10-CheckFinalSnapshotAvailability/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 10-CheckFinalSnapshotAvailability.zip
+  build-lambda11:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "11-CleanupAndTagging"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/11-CleanupAndTagging/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/11-CleanupAndTagging/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: 11-CleanupAndTagging.zip
+  build-error:
+    docker:
+    - image: circleci/python:3.6
+    working_directory: ~/repo
+    environment:
+      lambda_name: "ErrorHandlingAndCleanup"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - lambda-{{ .Branch }}-{{ checksum "lambda/ErrorHandlingAndCleanup/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run: shopt -s dotglob
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          python3 -m pip install -r ~/repo/lambda/requirements.txt -t .
+    - save_cache:
+        paths:
+        - ~/repo/lambda/$lambda_name
+        key: lambda-{{ .Branch }}-{{ checksum "lambda/ErrorHandlingAndCleanup/index.py" }}-{{ checksum "lambda/requirements.txt" }}
+    - run:
+        command: |
+          cd ~/repo/lambda/$lambda_name
+          zip -r $lambda_name.zip  *
+          cp *.zip ~
+    - persist_to_workspace:
+        root: ~/
+        paths: ErrorHandlingAndCleanup.zip
+  build-final-zip:
+    docker:
+      - image: circleci/python:3.6
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Create a Zip of Zips
+          command: |
+            cd ~
+            mkdir lambdas
+            cp *.zip lambdas
+            zip -r lambdas *
+      - store_artifacts:
+          path: ~/lambdas.zip
+workflows:
+  version: 2
+  Example_Workflow:
+    jobs:
+    - build-lambda00
+    - build-lambda01
+    - build-lambda02
+    - build-lambda03
+    - build-lambda04
+    - build-lambda05
+    - build-lambda06
+    - build-lambda07
+    - build-lambda08a
+    - build-lambda08b
+    - build-lambda09
+    - build-lambda10
+    - build-lambda11
+    - build-error
+    - build-final-zip:
+        requires:
+          - build-lambda00
+          - build-lambda01
+          - build-lambda02
+          - build-lambda03
+          - build-lambda04
+          - build-lambda05
+          - build-lambda06
+          - build-lambda07
+          - build-lambda08a
+          - build-lambda08b
+          - build-lambda09
+          - build-lambda10
+          - build-lambda11
+          - build-error

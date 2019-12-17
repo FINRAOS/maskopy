@@ -20,6 +20,10 @@ Maskopy has security controls such as access management via IAM roles, authoriza
 ### Bring Your Own Obfuscation Container
 Maskopy is a obfuscation tool agnostic solution. Teams can leverage any encryption tools or obfuscation frameworks based on their needs and bake those into a docker container. Bring the container to Maskopy solution  to run data obfuscation
 
+### Join Our Community
+We enjoy hearing your feedback! Join our gitter to share your experiences, discuss any potential features you want implemented or even to ask for help setting things up.
+Join us at: https://gitter.im/FINRAOS/maskopy
+
 ## Documentation
 - [Getting Started](docs/quickstart.md)
 - [AWS Setup](docs/aws-setup.md)
