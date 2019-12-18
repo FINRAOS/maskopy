@@ -1,5 +1,6 @@
 <img src="./docs/images/maskopy-banner.png" alt="drawing" width="400px"/>
 
+[![CircleCI](https://circleci.com/gh/FINRAOS/maskopy/tree/master.svg?style=svg)](https://circleci.com/gh/FINRAOS/maskopy/tree/master) [![Join the chat at https://gitter.im/FINRAOS/maskopy](https://badges.gitter.im/FINRAOS/maskopy.svg)](https://gitter.im/FINRAOS/maskopy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Overview:
 
@@ -19,10 +20,6 @@ Maskopy has security controls such as access management via IAM roles, authoriza
 
 ### Bring Your Own Obfuscation Container
 Maskopy is a obfuscation tool agnostic solution. Teams can leverage any encryption tools or obfuscation frameworks based on their needs and bake those into a docker container. Bring the container to Maskopy solution  to run data obfuscation
-
-### Join Our Community
-We enjoy hearing your feedback! Join our gitter to share your experiences, discuss any potential features you want implemented or even to ask for help setting things up.
-Join us at: https://gitter.im/FINRAOS/maskopy
 
 ## Documentation
 - [Getting Started](docs/quickstart.md)
