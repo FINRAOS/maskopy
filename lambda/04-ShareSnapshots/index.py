@@ -29,7 +29,7 @@ ACCOUNT_LIST = os.environ['accounts_to_share_with'].split(',')
 ASSUME_ROLE_ARN = os.environ['assume_role_arn']
 
 def lambda_handler(event, context):
-    """Lambda handler for the third lambda of the Maskopy process.
+    """Lambda handler for the fourth lambda of the Maskopy process.
     Args:
         event (dict): AWS Lambda uses this parameter to pass in event data to the handler.
         context (Context): AWS Lambda provides runtime info and meta data.
@@ -69,9 +69,24 @@ def share_snapshots(rds_client, snapshots, account_list):
             if err.response['Error']['Code'] == 'Throttling':
                 print("Throttling occurring.")
                 raise MaskopyThrottlingException(err)
-            print('Could not share snapshot with account.')
-            print(err)
-            raise
+            elif  err.response['Error']['Code']=='DBSnapshotNotFound':
+                try:
+                    rds_client.modify_db_cluster_snapshot_attribute(
+                        DBClusterSnapshotIdentifier=snapshot['SnapshotName'],
+                        AttributeName='restore',
+                        ValuesToAdd=account_list
+                    )
+                except ClientError as err:
+                    if err.response['Error']['Code'] == 'Throttling':
+                        print("Throttling occurring.")
+                        raise MaskopyThrottlingException(err)
+                    print('Could not share snapshot with account.')
+                    print(err)
+                    raise
+            else:
+                print('Could not share snapshot with account.')
+                print(err)
+                raise
     return True
 
 def create_account_session(sts_client, role_arn, request_id):

@@ -73,21 +73,21 @@ def lambda_handler(event, context):
         if isinstance(shared_snapshot, dict):
             snapshot_name = shared_snapshot.get('SnapshotName')
             print(f"Deleting snapshot in source account: {snapshot_name}")
-            if delete_snapshot(rds_source_client, snapshot_name):
+            if delete_snapshot(rds_source_client, snapshot_name,event["CreatedSnapshots"][0]["Engine"]):
                 deleted_resources.append({'SourceSnapshot' : snapshot_name})
 
     for destination_snapshot in event.get('CreatedDestinationSnapshots', []):
         if isinstance(destination_snapshot, dict):
             snapshot_name = destination_snapshot.get('SnapshotName')
             print(f"Deleting snapshots in destination account: {snapshot_name}")
-            if delete_snapshot(RDS_CLIENT, snapshot_name):
+            if delete_snapshot(RDS_CLIENT, snapshot_name,event["CreatedSnapshots"][0]["Engine"]):
                 deleted_resources.append({'DestinationSnapshot': snapshot_name})
 
     for database in event.get('DestinationRestoredDatabases', []):
-        if database.startswith('maskopy'):
-            print(f"Deleting RDS instance in destination account: {database}")
-            if delete_database(RDS_CLIENT, database):
-                deleted_resources.append({"DestinationDatabase": database})
+        if 'DBIdentifier' in database and database['DBIdentifier']['DBInstanceIdentifier'].startswith('maskopy'):
+            print(f"Deleting RDS in destination account: {database['DBIdentifier']['DBInstanceIdentifier']}")
+            if delete_database(RDS_CLIENT, database,event["CreatedSnapshots"][0]["Engine"]):
+                deleted_resources.append({"DestinationDatabase": database['DBIdentifier']})
 
     if event.get('ObfuscateRunMode') == 'ecs':
         ecs = event.get('ecs')
@@ -111,7 +111,60 @@ def lambda_handler(event, context):
 
     return deleted_resources
 
-def delete_snapshot(rds_client, snapshot_identifier):
+def delete_snapshot(rds_client, snapshot_identifier, engine):
+    """Function to delete snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): RDS snapshot identifer to delete
+        engine: The DB engine of the snapshot
+    Returns:
+        bool: True if snapshot was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    if 'aurora' in engine:
+        return delete_snapshot_cluster(rds_client, snapshot_identifier)
+    else:
+        return delete_snapshot_instance(rds_client, snapshot_identifier)
+def delete_snapshot_cluster(rds_client, snapshot_identifier):
+    """Function to delete snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): RDS snapshot identifer to delete
+    Returns:
+        bool: True if snapshot was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    try:
+        rds_client.delete_db_cluster_snapshot(
+            DBClusterSnapshotIdentifier=snapshot_identifier)
+        return True
+    except ClientError as err:
+        # Check if error code is DBSnapshotNotFound. If so, ignore the error.
+        if err.response['Error']['Code'] == 'DBClusterSnapshotNotFound':
+            print(f'Snapshot, {snapshot_identifier}, already deleted.')
+            return True
+        # Check if error code is due to SNAPSHOT not being in an available state.
+        if err.response['Error']['Code'] == 'InvalidDBClusterSnapshotState':
+            print(f"{snapshot_identifier}: RDS snapshot is not in available state.")
+            raise MaskopyResourceException(err)
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print(f"Throttling occurred when deleting snapshot: {snapshot_identifier}.")
+            raise MaskopyThrottlingException(err)
+        print(f"Error deleting snapshot, {snapshot_identifier}: {err.response['Error']['Code']}.")
+        print(err)
+        return False
+def delete_snapshot_instance(rds_client, snapshot_identifier):
     """Function to delete snapshot.
     Args:
         rds_client (Client): AWS RDS Client object.
@@ -146,37 +199,106 @@ def delete_snapshot(rds_client, snapshot_identifier):
         print(err)
         return False
 
-def delete_database(rds_client, db_instance_identifier):
-    """Function to delete RDS instance.
-    Args:
-        rds_client (Client): AWS RDS Client object.
+def delete_database(rds_client, db_identifier, engine):
+    """Function to delete RDS instance.	
+    Args:	
+        rds_client (Client): AWS RDS Client object.	
         db_instance_identifier (str): RDS instance to delete
-    Returns:
-        bool: True if instance was deleted successfully or does not exist,
-            False otherwise.
-    Raises:
-        MaskopyResourceException: Exception used when trying to access a resource
-            that cannot be accessed.
-        MaskopyThrottlingException: Exception used to catch throttling from AWS.
-            Used to implement a back off strategy.
+        engine: The DB engine of the snapshot
+    Returns:	
+        bool: True if instance was deleted successfully or does not exist,	
+            False otherwise.	
+    Raises:	
+        MaskopyResourceException: Exception used when trying to access a resource	
+            that cannot be accessed.	
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.	
+            Used to implement a back off strategy.	
     """
+    if 'aurora' in engine:
+        return delete_database_cluster(rds_client, db_identifier['DBIdentifier'])
+    else:
+        return delete_database_instance(rds_client, db_identifier['DBIdentifier'])
+def delete_database_cluster(rds_client, db_identifier):
+    """Function to delete RDS instance.	
+    Args:	
+        rds_client (Client): AWS RDS Client object.	
+        db_instance_identifier (str): RDS instance to delete	
+    Returns:	
+        bool: True if instance was deleted successfully or does not exist,	
+            False otherwise.	
+    Raises:	
+        MaskopyResourceException: Exception used when trying to access a resource	
+            that cannot be accessed.	
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.	
+            Used to implement a back off strategy.	
+    """
+    db_cluster_identifier=db_identifier['DBClusterIdentifier']
+    db_instance_identifier=db_identifier['DBInstanceIdentifier']
+    if db_cluster_identifier.startswith('Maskopy'):
+        print(f"Deleting RDS cluster in destination account: {db_cluster_identifier}")
     try:
         rds_client.delete_db_instance(
             DBInstanceIdentifier=db_instance_identifier,
             SkipFinalSnapshot=True)
+        rds_client.delete_db_cluster(
+            DBClusterIdentifier=db_cluster_identifier,
+            SkipFinalSnapshot=True)
         return True
     except ClientError as err:
-        # Check if error code is DBInstanceNotFound. If so, ignore the error.
+        # Check if error code is DBSnapshotNotFound. If so, ignore the error.	
+        if err.response['Error']['Code'] == 'DBClusterNotFound':
+            print(f'RDS cluster, {db_cluster_identifier}, already deleted.')
+            return True
+        # Check if error code is due to RDS not being in an available state.	
+        if err.response['Error']['Code'] == 'InvalidDBClusterState':
+            print(f"{db_cluster_identifier}: RDS cluster is not in available state.")
+            raise MaskopyResourceException(err)
+        # Check if error code is due to throttling.	
+        if err.response['Error']['Code'] == 'Throttling':
+            print(f"Throttling occurred when deleting database: {db_cluster_identifier}.")
+            raise MaskopyThrottlingException(err)
         if err.response['Error']['Code'] == 'DBInstanceNotFound':
             print(f'RDS instance, {db_instance_identifier}, already deleted.')
             return True
-        # Check if error code is due to RDS not being in an available state.
+        # Check if error code is due to RDS not being in an available state.	
         if err.response['Error']['Code'] == 'InvalidDBInstanceState':
             print(f"{db_instance_identifier}: RDS instance is not in available state.")
             raise MaskopyResourceException(err)
-        # Check if error code is due to throttling.
+        print(f"Error deleting database cluster, {db_cluster_identifier}: {err.response['Error']['Code']}")
+        print(err)
+        return False
+def delete_database_instance(rds_client, db_identifier):
+    """Function to delete RDS instance.	
+    Args:	
+        rds_client (Client): AWS RDS Client object.	
+        db_instance_identifier (str): RDS instance to delete	
+    Returns:	
+        bool: True if instance was deleted successfully or does not exist,	
+            False otherwise.	
+    Raises:	
+        MaskopyResourceException: Exception used when trying to access a resource	
+            that cannot be accessed.	
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.	
+            Used to implement a back off strategy.	
+    """
+    db_instance_identifier=db_identifier['DBInstanceIdentifier']
+    try:
+        rds_client.delete_db_instance(
+            DBInstanceIdentifier= db_instance_identifier,
+            SkipFinalSnapshot=True)
+        return True
+    except ClientError as err:
+        # Check if error code is DBSnapshotNotFound. If so, ignore the error.	
+        if err.response['Error']['Code'] == 'DBInstanceNotFound':
+            print(f'RDS instance, { db_instance_identifier}, already deleted.')
+            return True
+        # Check if error code is due to RDS not being in an available state.	
+        if err.response['Error']['Code'] == 'InvalidDBInstanceState':
+            print(f"{db_instance_identifier}: RDS instance is not in available state.")
+            raise MaskopyResourceException(err)
+        # Check if error code is due to throttling.	
         if err.response['Error']['Code'] == 'Throttling':
-            print(f"Throttling occurred when deleting database: {db_instance_identifier}.")
+            print(f"Throttling occurred when deleting database: { db_instance_identifier }.")
             raise MaskopyThrottlingException(err)
         print(f"Error deleting database, {db_instance_identifier}: {err.response['Error']['Code']}")
         print(err)

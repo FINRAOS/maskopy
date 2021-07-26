@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 usage () {
     cat <<USAGE
@@ -70,6 +70,8 @@ LAMBDA_DIRECTORY="$PWD/../../lambda"
 RELEASE_DIRECTORY="$PWD/release/"
 mkdir -p "${RELEASE_DIRECTORY}"
 
+python -m pip install -r ${LAMBDA_DIRECTORY}/requirements.txt -t ${LAMBDA_DIRECTORY}/00-AuthorizeUser
+
 shopt -s dotglob
 find ${LAMBDA_DIRECTORY}/* -prune -type d | while IFS= read -r d; do 
     echo "folderName: $d"
@@ -77,7 +79,6 @@ find ${LAMBDA_DIRECTORY}/* -prune -type d | while IFS= read -r d; do
     echo "lambdaName: $d"
     cd "${LAMBDA_DIRECTORY}/${lambdaName}"
 	chmod 644 index.py
-    python3 -m pip install -r "${LAMBDA_DIRECTORY}/requirements.txt" -t .
     zip -r "${lambdaName}.zip" *
     cp *.zip "${RELEASE_DIRECTORY}"
 done
@@ -113,7 +114,8 @@ fi
 
 sleep 10
 
-aws cloudformation wait stack-create-complete --stack-name ${CF_STACK_NAME}
+aws cloudformation wait stack-create-complete --stack-name ${CF_STACK_NAME} --region "${AWS_REGION}"
+
 if [ $? -ne 0 ]; then
     echo "Failed to wait for Cloudformation Stack to complete: ${CF_STACK_NAME}"
     exit 1;

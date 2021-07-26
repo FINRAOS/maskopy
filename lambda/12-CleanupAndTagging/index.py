@@ -57,18 +57,21 @@ def lambda_handler(event, context):
     session = create_account_session(
         sts_client, ASSUME_ROLE_ARN, context.aws_request_id)
     rds_source_client = session.client('rds')
-
+    engine=event['CreatedSnapshots'][0]['Engine']
+    status_1 = True
+    status_2 = True
+    status_3 = True
     # status_1 will return the status of deleting the copied snapshot in the source environment.
     # status_2 will return the status of deleting the copied snapshot in the destination
     # environment.
     # status_3 will return the status of deleting the restored database in the destination
     # environment used for obfuscation.
     for shared_snapshot in event['CreatedSnapshots']:
-        status_1 = delete_snapshot(rds_source_client, shared_snapshot['SnapshotName'])
+        status_1 = delete_snapshot(rds_source_client, shared_snapshot['SnapshotName'],engine)
     for destination_snapshot in event['CreatedDestinationSnapshots']:
-        status_2 = delete_snapshot(rds_client, destination_snapshot['SnapshotName'])
+        status_2 = delete_snapshot(rds_client, destination_snapshot['SnapshotName'],engine)
     for database in event['DestinationRestoredDatabases']:
-        status_3 = delete_database(rds_client, database)
+        status_3 = delete_database(rds_client, database,engine)
 
     # status_4 will return the status of deleting the ASG and launch configuration.
     # status_5 will return the status of deleting the task definition of the task.
@@ -91,7 +94,7 @@ def lambda_handler(event, context):
     final_snapshot_arn = 'N/A'
     for final_snapshot in event['CreatedFinalSnapshots']:
         status_7 = final_snapshot_arn = get_snapshot_arn(rds_client,
-                                                         final_snapshot['SnapshotName'])
+                                                         final_snapshot['SnapshotName'],engine)
         status_8 = add_tags_to_snapshot(rds_client, final_snapshot_arn, event['ApplicationName'],
                                         event['CreatedSnapshots'][0]['Tags'])
 
@@ -118,7 +121,60 @@ def lambda_handler(event, context):
     result.append({'Message' : json.dumps(json_msg)})
     return result
 
-def delete_snapshot(rds_client, snapshot_identifier):
+def delete_snapshot(rds_client, snapshot_identifier, engine):
+    """Function to delete snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): RDS snapshot identifer to delete
+        engine: The DB engine of the snapshot
+    Returns:
+        bool: True if snapshot was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    if 'aurora' in engine:
+        return delete_snapshot_cluster(rds_client,snapshot_identifier)
+    else:
+        return delete_snapshot_instance(rds_client,snapshot_identifier)
+def delete_snapshot_cluster(rds_client, snapshot_identifier):
+    """Function to delete snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): RDS snapshot identifer to delete
+    Returns:
+        bool: True if snapshot was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    try:
+        rds_client.delete_db_cluster_snapshot(
+            DBClusterSnapshotIdentifier=snapshot_identifier)
+        return True
+    except ClientError as err:
+        # Check if error code is DBClusterSnapshotNotFound. If so, ignore the error.
+        if err.response['Error']['Code'] == 'DBClusterSnapshotNotFound':
+            print(f'Snapshot, {snapshot_identifier}, already deleted.')
+            return True
+        # Check if error code is due to SNAPSHOT not being in an available state.
+        if err.response['Error']['Code'] == 'InvalidDBClusterSnapshotState':
+            print(f"{snapshot_identifier}: RDS cluster snapshot is not in available state.")
+            raise MaskopyResourceException(err)
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print(f"Throttling occurred when deleting cluster snapshot: {snapshot_identifier}.")
+            raise MaskopyThrottlingException(err)
+        print(f"Error deleting cluster snapshot, {snapshot_identifier}: {err.response['Error']['Code']}.")
+        print(err)
+        return False
+def delete_snapshot_instance(rds_client, snapshot_identifier):
     """Function to delete snapshot.
     Args:
         rds_client (Client): AWS RDS Client object.
@@ -152,8 +208,26 @@ def delete_snapshot(rds_client, snapshot_identifier):
         print(f"Error deleting snapshot, {snapshot_identifier}: {err.response['Error']['Code']}.")
         print(err)
         return False
-
-def delete_database(rds_client, db_instance_identifier):
+def delete_database(rds_client, db_instance_identifier, engine):
+    """Function to delete RDS instance.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        db_instance_identifier (str): RDS instance to delete
+        engine: The DB engine of the snapshot
+    Returns:
+        bool: True if instance was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    if 'aurora' in engine:
+        return delete_database_cluster(rds_client, db_instance_identifier)
+    else:
+        return delete_database_instance(rds_client, db_instance_identifier)
+def delete_database_cluster(rds_client, db_instance_identifier):
     """Function to delete RDS instance.
     Args:
         rds_client (Client): AWS RDS Client object.
@@ -169,7 +243,50 @@ def delete_database(rds_client, db_instance_identifier):
     """
     try:
         rds_client.delete_db_instance(
-            DBInstanceIdentifier=db_instance_identifier,
+            DBInstanceIdentifier=db_instance_identifier['DBIdentifier']['DBInstanceIdentifier'],
+            SkipFinalSnapshot=True)
+        rds_client.delete_db_cluster(
+            DBClusterIdentifier=db_instance_identifier['DBIdentifier']['DBClusterIdentifier'],
+            SkipFinalSnapshot=True)
+        return True
+    except ClientError as err:
+        # Check if error code is DBSnapshotNotFound. If so, ignore the error.
+        if err.response['Error']['Code'] == 'DBInstanceNotFound':
+            print(f'RDS instance, {db_instance_identifier}, already deleted.')
+            return True
+        # Check if error code is due to RDS already being deleted.
+        if (err.response['Error']['Code'] == 'InvalidDBInstanceState' and
+                'already being deleted.' in err.response['Error']['Message']):
+            print(f"{db_instance_identifier}: RDS instance being deleted.")
+            return True
+        # Check if error code is due to RDS not being in an available state.
+        if err.response['Error']['Code'] == 'InvalidDBInstanceState':
+            print(f"{db_instance_identifier}: RDS instance is not in available state.")
+            raise MaskopyResourceException(err)
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print(f"Throttling occurred when deleting database: {db_instance_identifier}.")
+            raise MaskopyThrottlingException(err)
+        print(f"Error deleting database, {db_instance_identifier}: {err.response['Error']['Code']}")
+        print(err)
+        return False
+def delete_database_instance(rds_client, db_instance_identifier):
+    """Function to delete RDS instance.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        db_instance_identifier (str): RDS instance to delete
+    Returns:
+        bool: True if instance was deleted successfully or does not exist,
+            False otherwise.
+    Raises:
+        MaskopyResourceException: Exception used when trying to access a resource
+            that cannot be accessed.
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    try:
+        rds_client.delete_db_instance(
+            DBInstanceIdentifier=db_instance_identifier['DBIdentifier']['DBInstanceIdentifier'],
             SkipFinalSnapshot=True)
         return True
     except ClientError as err:
@@ -326,7 +443,52 @@ def delete_cluster(ecs_client, cluster_name, instance_identifier=None):
         print(err)
         return False
 
-def get_snapshot_arn(rds_client, snapshot_identifier):
+def get_snapshot_arn(rds_client, snapshot_identifier, engine):
+    """Function to get the full ARN of a snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): Snapshot identifier to get full ARN
+    Returns:
+        str: The full ARN of the snapshot_identifier input,
+            False otherwise.
+    Raises:
+        	        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    if 'aurora' in engine:
+        return  get_snapshot_arn_cluster(rds_client, snapshot_identifier)
+    else:
+        return  get_snapshot_arn_instance(rds_client, snapshot_identifier)
+def get_snapshot_arn_cluster(rds_client, snapshot_identifier):
+    """Function to get the full ARN of a snapshot.
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        snapshot_identifier (str): Snapshot identifier to get full ARN
+    Returns:
+        str: The full ARN of the snapshot_identifier input,
+            False otherwise.
+    Raises:
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    try:
+        response = rds_client.describe_db_cluster_snapshots(
+            DBClusterSnapshotIdentifier=snapshot_identifier)
+        return response['DBClusterSnapshots'][0]['DBClusterSnapshotArn']
+    except ClientError as err:
+        # Check if error code is DBClusterSnapshotNotFound.
+        if err.response['Error']['Code'] == 'DBClusterSnapshotNotFound':
+            print(f'RDS snapshot, {snapshot_identifier}, not found.')
+            return False
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print(f"Throttling occurred when getting cluster snapshot ARN: {snapshot_identifier}.")
+            raise MaskopyThrottlingException(err)
+        print(f"Error getting cluster snapshot, {snapshot_identifier}, ARN: "
+              f"{err.response['Error']['Code']}")
+        print(err)
+        return False
+def get_snapshot_arn_instance(rds_client, snapshot_identifier):
     """Function to get the full ARN of a snapshot.
     Args:
         rds_client (Client): AWS RDS Client object.

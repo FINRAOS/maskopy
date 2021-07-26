@@ -135,13 +135,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/01-UseExistingSnapshot.zip"
+                "/01-CheckInputs.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-01-UseExistingSnapshot",
-        "Description" : "MASKOPY-01-UseExistingSnapshot",
+        "FunctionName": "MASKOPY-01-CheckInputs",
+        "Description" : "MASKOPY-01-CheckInputs",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -192,13 +192,70 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/02-CheckForSnapshotCompletion.zip"
+                "/02-UseExistingSnapshot.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-02-CheckForSnapshotCompletion",
-        "Description" : "MASKOPY-02-CheckForSnapshotCompletion",
+        "FunctionName": "MASKOPY-02-UseExistingSnapshot",
+        "Description" : "MASKOPY-02-UseExistingSnapshot",
+        "Handler": "index.lambda_handler",
+        "Role": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:iam::",
+              { "Ref": "AWS::AccountId" },
+              ":role/",
+              { "Ref": "lambdaRoleName" }
+            ]
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "ApplicationName",
+            "Value": "MASKOPY"
+          },
+          {
+            "Key": "Cost Center",
+            "Value": { "Ref": "costCenter" }
+          }
+        ],
+        "MemorySize": 1024,
+        "Timeout": 25,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Runtime": "python3.6",
+        "VpcConfig": {
+          "SecurityGroupIds": { "Ref": "lambdaSecurityGroupList"},
+          "SubnetIds": { "Ref": "lambdaSubnetList" }
+        },
+        "Environment": {
+          "Variables" : {
+            "assume_role_arn": { "Ref": "assumeRoleArn" },
+            "custom_kms_key": { "Ref": "masterAccessKeyArn" }
+          }
+        }
+      }
+    },
+    "lambda3LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": { "Ref": "s3Bucket"},
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                { "Ref": "s3Prefix" },
+                "/03-CheckForSnapshotCompletion.zip"
+              ]
+            ]
+          }
+        },
+        "FunctionName": "MASKOPY-03-CheckForSnapshotCompletion",
+        "Description" : "MASKOPY-03-CheckForSnapshotCompletion",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -238,7 +295,7 @@
         }
       }
     },
-    "lambda3LambdaFunction": {
+    "lambda4LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -248,13 +305,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/03-ShareSnapshots.zip"
+                "/04-ShareSnapshots.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-03-ShareSnapshots",
-        "Description" : "MASKOPY-03-ShareSnapshots",
+        "FunctionName": "MASKOPY-04-ShareSnapshots",
+        "Description" : "MASKOPY-04-ShareSnapshots",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -295,7 +352,7 @@
         }
       }
     },
-    "lambda4LambdaFunction": {
+    "lambda5LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -305,13 +362,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/04-CopySharedDBSnapshots.zip"
+                "/05-CopySharedDBSnapshots.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-04-CopySharedDBSnapshots",
-        "Description" : "MASKOPY-04-CopySharedDBSnapshots",
+        "FunctionName": "MASKOPY-05-CopySharedDBSnapshots",
+        "Description" : "MASKOPY-05-CopySharedDBSnapshots",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -351,7 +408,7 @@
         }
       }
     },
-    "lambda5LambdaFunction": {
+    "lambda6LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -361,13 +418,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/05-CheckForDestinationSnapshotCompletion.zip"
+                "/06-CheckForDestinationSnapshotCompletion.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-05-CheckForDestinationSnapshotCompletion",
-        "Description" : "MASKOPY-05-CheckForDestinationSnapshotCompletion",
+        "FunctionName": "MASKOPY-06-CheckForDestinationSnapshotCompletion",
+        "Description" : "MASKOPY-06-CheckForDestinationSnapshotCompletion",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -402,7 +459,7 @@
         }
       }
     },
-    "lambda6LambdaFunction": {
+    "lambda7LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -412,13 +469,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/06-RestoreDatabases.zip"
+                "/07-RestoreDatabases.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-06-RestoreDatabases",
-        "Description" : "MASKOPY-06-RestoreDatabases",
+        "FunctionName": "MASKOPY-07-RestoreDatabases",
+        "Description" : "MASKOPY-07-RestoreDatabases",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -464,7 +521,7 @@
         }
       }
     },
-    "lambda7LambdaFunction": {
+    "lambda8LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -474,13 +531,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/07-CheckForRestoreCompletion.zip"
+                "/08-CheckForRestoreCompletion.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-07-CheckForRestoreCompletion",
-        "Description" : "MASKOPY-07-CheckForRestoreCompletion",
+        "FunctionName": "MASKOPY-08-CheckForRestoreCompletion",
+        "Description" : "MASKOPY-08-CheckForRestoreCompletion",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -515,7 +572,7 @@
         }
       }
     },
-    "lambda8aLambdaFunction": {
+    "lambda9aLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -525,13 +582,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/08a-CreateFargate.zip"
+                "/09a-CreateFargate.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-08a-CreateFargate",
-        "Description" : "MASKOPY-08a-CreateFargate",
+        "FunctionName": "MASKOPY-09a-CreateFargate",
+        "Description" : "MASKOPY-09a-CreateFargate",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -574,57 +631,6 @@
         }
       }
     },
-    "lambda9LambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": { "Ref": "s3Bucket"},
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                { "Ref": "s3Prefix" },
-                "/09-TakeSnapshot.zip"
-              ]
-            ]
-          }
-        },
-        "FunctionName": "MASKOPY-09-TakeSnapshot",
-        "Description" : "MASKOPY-09-TakeSnapshot",
-        "Handler": "index.lambda_handler",
-        "Role": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:iam::",
-              { "Ref": "AWS::AccountId" },
-              ":role/",
-              { "Ref": "lambdaRoleName" }
-            ]
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "ApplicationName",
-            "Value": "MASKOPY"
-          },
-          {
-            "Key": "Cost Center",
-            "Value": { "Ref": "costCenter" }
-          }
-        ],
-        "MemorySize": 1024,
-        "Timeout": 25,
-        "TracingConfig": {
-          "Mode": "PassThrough"
-        },
-        "Runtime": "python3.6",
-        "VpcConfig": {
-          "SecurityGroupIds": { "Ref": "lambdaSecurityGroupList"},
-          "SubnetIds": { "Ref": "lambdaSubnetList" }
-        }
-      }
-    },
     "lambda10LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -635,13 +641,13 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/10-CheckFinalSnapshotAvailability.zip"
+                "/10-TakeSnapshot.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-10-CheckFinalSnapshotAvailability",
-        "Description" : "MASKOPY-10-CheckFinalSnapshotAvailability",
+        "FunctionName": "MASKOPY-10-TakeSnapshot",
+        "Description" : "MASKOPY-10-TakeSnapshot",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -686,13 +692,64 @@
               "",
               [
                 { "Ref": "s3Prefix" },
-                "/11-CleanupAndTagging.zip"
+                "/11-CheckFinalSnapshotAvailability.zip"
               ]
             ]
           }
         },
-        "FunctionName": "MASKOPY-11-CleanupAndTagging",
-        "Description" : "MASKOPY-11-CleanupAndTagging",
+        "FunctionName": "MASKOPY-11-CheckFinalSnapshotAvailability",
+        "Description" : "MASKOPY-11-CheckFinalSnapshotAvailability",
+        "Handler": "index.lambda_handler",
+        "Role": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:iam::",
+              { "Ref": "AWS::AccountId" },
+              ":role/",
+              { "Ref": "lambdaRoleName" }
+            ]
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "ApplicationName",
+            "Value": "MASKOPY"
+          },
+          {
+            "Key": "Cost Center",
+            "Value": { "Ref": "costCenter" }
+          }
+        ],
+        "MemorySize": 1024,
+        "Timeout": 25,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Runtime": "python3.6",
+        "VpcConfig": {
+          "SecurityGroupIds": { "Ref": "lambdaSecurityGroupList"},
+          "SubnetIds": { "Ref": "lambdaSubnetList" }
+        }
+      }
+    },
+    "lambda12LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": { "Ref": "s3Bucket"},
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                { "Ref": "s3Prefix" },
+                "/12-CleanupAndTagging.zip"
+              ]
+            ]
+          }
+        },
+        "FunctionName": "MASKOPY-12-CleanupAndTagging",
+        "Description" : "MASKOPY-12-CleanupAndTagging",
         "Handler": "index.lambda_handler",
         "Role": {
           "Fn::Join": [
@@ -732,7 +789,7 @@
         }
       }
     },
-    "lambda12LambdaFunction": {
+    "lambda13LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {

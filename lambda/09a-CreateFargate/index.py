@@ -33,7 +33,7 @@ from botocore.exceptions import ClientError
 ECS_CLIENT = boto3.client('ecs')
 
 def lambda_handler(event, context):
-    """Lambda handler for the eighth lambda of the Maskopy process.
+    """Lambda handler for the ninth lambda of the Maskopy process.
     Args:
         event (dict): AWS Lambda uses this parameter to pass in event data to the handler.
         context (Context): AWS Lambda provides runtime info and meta data.
@@ -55,11 +55,27 @@ def lambda_handler(event, context):
         },
         {
             'name': 'RDS_INSTANCE_IDENTIFIER',
-            'value': event['DestinationRestoredDatabases'][0]
+            'value': event['DestinationRestoredDatabases'][0]['DBIdentifier']['DBInstanceIdentifier']
         },
         {
             'name': 'TIMESTAMP',
             'value': timestamp
+        },
+        {
+            'name': 'ENGINE',
+            'value': event['CreatedSnapshots'][0]['Engine']
+        },
+        {
+            'name': 'SQL_SCRIPTS',
+            'value': event.get('SqlScriptList') or ''
+        },
+        {
+            'name': 'DB_NAME',
+            'value': event.get('DbName') or ''
+        },
+        {
+            'name': 'APP_NAME',
+            'value': 'springboot'
         }
     ]
     create_cluster(cluster_name)
@@ -76,6 +92,7 @@ def lambda_handler(event, context):
 
     return ({
         "ClusterName": cluster_name,
+        "PlatformVersion": "1.4.0",
         "TaskDefinition": task_definition_name + ':' + task_definition_revision
     })
 

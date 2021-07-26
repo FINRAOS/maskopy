@@ -28,7 +28,7 @@ STS_CLIENT = boto3.client("sts")
 ASSUME_ROLE_ARN = os.environ['assume_role_arn']
 
 def lambda_handler(event, context):
-    """Lambda handler for the second lambda of the Maskopy process.
+    """Lambda handler for the third lambda of the Maskopy process.
     Args:
         event (dict): AWS Lambda uses this parameter to pass in event data to the handler.
         context (Context): AWS Lambda provides runtime info and meta data.
@@ -40,11 +40,12 @@ def lambda_handler(event, context):
     assume_role_session = create_account_session(
         STS_CLIENT, ASSUME_ROLE_ARN, context.aws_request_id)
     rds_client = assume_role_session.client('rds')
+    engine = event['CreatedSnapshots'][0]['Engine']
 
     # Check status of snapshots in CreatedSnapshots input.
     for snapshot in event['CreatedSnapshots']:
         snapshot_info = get_db_snapshots(
-            rds_client, None, None, snapshot['SnapshotName'])
+            rds_client, engine, None, None, snapshot['SnapshotName'])
         for info in snapshot_info:
             if info['Status'] == 'available':
                 completed_snapshots.append('snapshot')
@@ -53,12 +54,12 @@ def lambda_handler(event, context):
         return True
     return False
 
-def get_db_snapshots(rds_client, instance_identifier=None,
+def get_db_snapshots(rds_client, engine, rds_identifier=None,
                      snapshot_type=None, snapshot_identifier=None):
     """Function to query snapshots to check if snapshots are in available status
     Args:
         rds_client (Client): AWS RDS Client object.
-        instance_identifier (str, optional): RDS instance identifier string.
+        rds_identifier (str, optional): RDS instance or cluster identifier string.
             If specified, will list all snapshots belonging to this instance.
         snapshot_type (str, optional): RDS snapshot type.
             Required if snapshot is an automated snapshot.
@@ -71,37 +72,66 @@ def get_db_snapshots(rds_client, instance_identifier=None,
         MaskopyThrottlingException: Exception used to catch throttling from AWS.
             Used to implement a back off strategy.
     """
+    if 'aurora' in engine:
+        return  get_db_snapshots_cluster(rds_client,rds_identifier, snapshot_type, snapshot_identifier)
+    else:
+        return  get_db_snapshots_instance(rds_client,rds_identifier, snapshot_type, snapshot_identifier)
+def get_db_snapshots_cluster(rds_client, cluster_identifier=None, snapshot_type=None, snapshot_identifier=None):
+    """Return a list of cluster snapshots that were created in UseExistingSnapshot step"""
     describe_db_snapshot_params = {}
-    if instance_identifier:
-        describe_db_snapshot_params['DBInstanceIdentifier'] = instance_identifier
+    if cluster_identifier:
+        describe_db_snapshot_params['DBClusterIdentifier'] = cluster_identifier
     if snapshot_type:
-        describe_db_snapshot_params['SnapshotType'] = snapshot_type
+        describe_db_snapshot_params['snapshot_type'] = snapshot_type
     if snapshot_identifier:
-        describe_db_snapshot_params['DBSnapshotIdentifier'] = snapshot_identifier
-
+        describe_db_snapshot_params['DBClusterSnapshotIdentifier'] = snapshot_identifier
     try:
-        print('Getting DB snapshots with the following parameters:')
+        print('Getting DB snapshots with the following parameters: ')
         print(json.dumps(describe_db_snapshot_params))
-
-        snapshot_response = rds_client.describe_db_snapshots(
+        snapshot_response = rds_client.describe_db_cluster_snapshots(
             **describe_db_snapshot_params)
-        snapshots = snapshot_response['DBSnapshots']
-
+        snapshots = snapshot_response['DBClusterSnapshots']
         # Paginate the rds response, if required.
         while 'Marker' in snapshot_response:
             describe_db_snapshot_params['Marker'] = snapshot_response['Marker']
-            snapshot_response = rds_client.describe_db_snapshots(
+            snapshot_response = rds_client.describe_db_cluster_snapshots(
                 **describe_db_snapshot_params)
-            snapshots = snapshots + snapshot_response['DBSnapshots']
-
+            snapshots = snapshots + snapshot_response['DBClusterSnapshots']
     except ClientError as err:
         # Check if error code is due to throttling.
         if err.response['Error']['Code'] == 'Throttling':
             print("Throttling occurring.")
             raise MaskopyThrottlingException(err)
-        print(f"Failed to get DB Snapshots: {err}")
+        print(f"Failed to get DB Cluster Snapshots: {err}")
         raise
-
+    return snapshots
+def get_db_snapshots_instance(rds_client, instance_identifier=None, snapshot_type=None, snapshot_identifier=None):
+    """Return a list of cluster snapshots that were created in UseExistingSnapshot step"""
+    describe_db_snapshot_params = {}
+    if instance_identifier:
+        describe_db_snapshot_params['DBInstanceIdentifier'] = instance_identifier
+    if snapshot_type:
+        describe_db_snapshot_params['snapshot_type'] = snapshot_type
+    if snapshot_identifier:
+        describe_db_snapshot_params['DBSnapshotIdentifier'] = snapshot_identifier
+    try:
+        print('Getting DB snapshots with the following parameters: ')
+        print(json.dumps(describe_db_snapshot_params))
+        snapshot_response = rds_client.describe_db_snapshots(
+            **describe_db_snapshot_params)
+        snapshots = snapshot_response['DBSnapshots']
+        while 'Marker' in snapshot_response:
+            describe_db_snapshot_params['Marker'] = snapshot_response['Marker']
+            snapshot_response = rds_client.describe_db_snapshots(
+                **describe_db_snapshot_params)
+            snapshots = snapshots + snapshot_response['DBSnapshots']
+    except ClientError as err:
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print("Throttling occurring.")
+            raise MaskopyThrottlingException(err)
+        print(f"Failed to get DB Instance Snapshots: {err}")
+        raise
     return snapshots
 
 def create_account_session(sts_client, role_arn, request_id):

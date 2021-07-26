@@ -66,24 +66,27 @@ Input to Maskopy is provided through environment variables. Below are the list o
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
 | APPLICATION_NAME         | Name of the application running Maskopy. `The name must be part of IAM user/role name executing the step function`.                                                                             | MASKOPY                                                   |
 | COST_CENTER              | All the temporary resources are tagged with the code.                                                                                                                                          | abc123                                                    |
+| DB_NAME                   | DbName                                                                                                                                                                          | dbname                                                       |
 | DESTINATION_ENV          | SDLC environment name                                                                                                                                                                          | dev                                                       |
-| OBFUSCATION_SCRIPT_PATH  | Location of bootstrap.sh in S3 bucket                                                                                                                                                          | my-obfuscation-bucket-name/obfuscation                    |
+| OBFUSCATION_SCRIPT_PATH  | Location of sql script in S3 bucket                                                                                                                                                          | my-obfuscation-bucket-name/obfuscation                    |
 | RDS_OPTION_GROUP         | `Optional parameter`                                                                                                                                                                           |           |
 | RDS_PARAMETER_GROUP      | `Optional parameter`                                                                                                                                                                           |           |
 | RDS_SNAPSHOT_IDENTIFIER  | This is the rds snapshot id in the source account. `Must be tagged with key:ApplicationName and Value: <APPLICATION_NAME>`.                                                                    | rds:myapp-ora-maskopy-test-1-2019-11-25-06-12             |
 | STEP_FN_ARN              | Arn of the step function to execute.                                                                                                                                                           | arn:aws:states:us-east-1:123456789012:stateMachine:MASKOPY-CLIENT-StateMachine              |
-
+| SQL_SCRIPT_LIST              | List of sql scripts to execute.                                                                                                                                                           | obfuscation1.sql, obfuscation2.sql              |
 
 Export the following environment variables into the shell.
 ```sh
 export APPLICATION_NAME="<APP_NAME>"
 export COST_CENTER="<COST_CENTER_FOR_BILLING>"
+export DB_NAME="<DB_NAME>"
 export DESTINATION_ENV="<TARGET_ENV>"
-export OBFUSCATION_SCRIPT_PATH="<S3_BUCKET_NAME>/obfuscation>"
+export OBFUSCATION_SCRIPT_PATH="<S3_BUCKET_PATH>>"
 export RDS_OPTION_GROUP="<RDS_OPTION_GROUP_NAME-OPTIONAL>"
 export RDS_PARAMETER_GROUP="<RDS_PARAMETER_GROUP_NAME-OPTIONAL>"
 export RDS_SNAPSHOT_IDENTIFIER="<DB_SNAPSHOT_NAME_IN_SOURCE_ACCOUNT>"
 export STEP_FN_ARN="arn:aws:states:<AWS_REGION>:<STAGING_ACCOUNT_ID>:stateMachine:MASKOPY-CLIENT-StateMachine"
+export SQL_SCRIPT_LIST="<SQL_SCRIPT_LIST>"
 ```
 
 ### Step 3 : Run Maskopy

@@ -43,12 +43,56 @@
                 }
             ],
             "OutputPath": "$",
-            "ResultPath": null,
+            "ResultPath": "$.Engine",
+            "Next": "CheckInputs"
+        },
+        "CheckInputs":{
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-01-CheckInputs",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException",
+                        "MaskopyTimeoutException",
+                        "States.Timeout"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 2,
+                    "BackoffRate": 2
+                },
+                {
+                    "ErrorEquals": [
+                        "MaskopyThrottlingException"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 4
+                },
+                {
+                    "ErrorEquals": [
+                        "TypeError",
+                        "NameError",
+                        "KeyError"
+                    ],
+                    "MaxAttempts": 0
+                }
+            ],
+            "Catch": [
+                {
+                    "ErrorEquals": [ "States.ALL" ],
+                    "ResultPath": "$.AuthorizationError",
+                    "Next": "ErrorHandlingAndCleanup"
+                }
+            ],
+            "OutputPath": "$",
+            "ResultPath": "$.CheckInputs",
             "Next": "UseExistingSnapshot"
         },
         "UseExistingSnapshot":{
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-01-UseExistingSnapshot",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-02-UseExistingSnapshot",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -97,7 +141,7 @@
         },
         "CheckCreationStatus": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-02-CheckForSnapshotCompletion",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-03-CheckForSnapshotCompletion",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -152,7 +196,7 @@
         },
         "ShareSnapshots": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-03-ShareSnapshots",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-04-ShareSnapshots",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -186,7 +230,7 @@
         },
         "CreateDestinationSnapshots": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-04-CopySharedDBSnapshots",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-05-CopySharedDBSnapshots",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -227,7 +271,7 @@
         },
         "CheckDestinationCreationStatus": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-05-CheckForDestinationSnapshotCompletion",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-06-CheckForDestinationSnapshotCompletion",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -280,7 +324,7 @@
         },
         "RestoreDatabases": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-06-RestoreDatabases",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-07-RestoreDatabases",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -319,7 +363,7 @@
         },
         "CheckRestoreStatus": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-07-CheckForRestoreCompletion",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-08-CheckForRestoreCompletion",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -375,7 +419,7 @@
         },
         "CreateFargate": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-08a-CreateFargate",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-09a-CreateFargate",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -450,7 +494,8 @@
                         "SecurityGroups": [ AWS_SECURITY_GROUPS ],
                         "Subnets": [ AWS_SUBNETS ]
                     }
-                }
+                },
+                "PlatformVersion.$": "$.PlatformVersion"
             },
             "ResultPath": "$.ECSRunTask",
             "OutputPath": "$",
@@ -458,7 +503,7 @@
         },
         "TakeFinalSnapshot": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-09-TakeSnapshot",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-10-TakeSnapshot",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -499,7 +544,7 @@
         },
         "CheckFinalSnapshotavailability": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-10-CheckFinalSnapshotAvailability",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-11-CheckFinalSnapshotAvailability",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -600,7 +645,7 @@
         },
         "CleanupAndTagging": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-11-CleanupAndTagging",
+            "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:MASKOPY-12-CleanupAndTagging",
             "Retry": [
                 {
                     "ErrorEquals": [

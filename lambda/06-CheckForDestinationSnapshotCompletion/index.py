@@ -24,7 +24,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 def lambda_handler(event, context):
-    """Lambda handler for the fifth lambda of the Maskopy process.
+    """Lambda handler for the sixth lambda of the Maskopy process.
     Args:
         event (dict): AWS Lambda uses this parameter to pass in event data to the handler.
         context (Context): AWS Lambda provides runtime info and meta data.
@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     # Check availability state of the snapshots in the list of created snapshots
     for snapshot in event['CreatedDestinationSnapshots']:
         snapshot_info = get_db_snapshots(
-            rds_client, None, None, snapshot['SnapshotName'])
+            rds_client,event['CreatedSnapshots'][0]['Engine'], None, None, snapshot['SnapshotName'])
         for info in snapshot_info:
             if info['Status'] == 'available':
                 completed_snapshots.append('snapshot')
@@ -45,8 +45,84 @@ def lambda_handler(event, context):
         return True
     return False
 
-def get_db_snapshots(rds_client, instance_identifier=None,
+def get_db_snapshots(rds_client,engine, instance_identifier=None,
                      snapshot_type=None, snapshot_identifier=None):
+    """
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        instance_identifier (str, optional): RDS instance identifier string.
+            If specified, will list all snapshots belonging to this instance.
+        snapshot_type (str, optional): RDS snapshot type.
+            Required if snapshot is an automated snapshot.
+        snapshot_identifier (str, optional): RDS snapshot identifer.
+            Cannot be used in conjunction with instance_identifier.
+    Returns:
+        :obj:`list` of :obj:`dict`: A list of snapshots.
+            None if no snapshots exist with specified parameters.
+    Raises:
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    if 'aurora' in engine:
+        return get_db_snapshots_cluster(
+            rds_client, None, None, snapshot_identifier)
+    else:
+        return get_db_snapshots_instance(
+            rds_client, None, None, snapshot_identifier)
+
+def get_db_snapshots_cluster(rds_client, instance_identifier=None,
+                             snapshot_type=None, snapshot_identifier=None):
+    """Function to query snapshots to check if snapshots are in available status
+    Args:
+        rds_client (Client): AWS RDS Client object.
+        instance_identifier (str, optional): RDS instance identifier string.
+            If specified, will list all snapshots belonging to this instance.
+        snapshot_type (str, optional): RDS snapshot type.
+            Required if snapshot is an automated snapshot.
+        snapshot_identifier (str, optional): RDS snapshot identifer.
+            Cannot be used in conjunction with instance_identifier.
+    Returns:
+        :obj:`list` of :obj:`dict`: A list of snapshots.
+            None if no snapshots exist with specified parameters.
+    Raises:
+        MaskopyThrottlingException: Exception used to catch throttling from AWS.
+            Used to implement a back off strategy.
+    """
+    describe_db_cluster_snapshot_params = {}
+    if instance_identifier:
+        describe_db_cluster_snapshot_params['DBClusterIdentifier'] = instance_identifier
+    if snapshot_type:
+        describe_db_cluster_snapshot_params['SnapshotType'] = snapshot_type
+    if snapshot_identifier:
+        describe_db_cluster_snapshot_params['DBClusterSnapshotIdentifier'] = snapshot_identifier
+
+    try:
+        print('Getting DB snapshots with the following parameters:')
+        print(json.dumps(describe_db_cluster_snapshot_params))
+
+        snapshot_response = rds_client.describe_db_cluster_snapshots(
+            **describe_db_cluster_snapshot_params)
+        snapshots = snapshot_response['DBClusterSnapshots']
+
+        # Paginate the rds response, if required.
+        while 'Marker' in snapshot_response:
+            describe_db_cluster_snapshot_params['Marker'] = snapshot_response['Marker']
+            snapshot_response = rds_client.describe_db_cluster_snapshots(
+                **describe_db_snapshot_params)
+            snapshots = snapshots + snapshot_response['DBClusterSnapshots']
+
+    except ClientError as err:
+        # Check if error code is due to throttling.
+        if err.response['Error']['Code'] == 'Throttling':
+            print("Throttling occurring.")
+            raise MaskopyThrottlingException(err)
+        print(f"Failed to get DB Snapshots: {err}")
+        raise
+
+    return snapshots
+
+def get_db_snapshots_instance(rds_client, instance_identifier=None,
+                              snapshot_type=None, snapshot_identifier=None):
     """Function to query snapshots to check if snapshots are in available status
     Args:
         rds_client (Client): AWS RDS Client object.
