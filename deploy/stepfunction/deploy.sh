@@ -35,6 +35,7 @@ while getopts ':a:g:n:r:s:t:' flag; do
 done
 CF_STACK_NAME=MASKOPY-stepfunction
 
+
 sed -i -e "s/REGION/${AWS_REGION}/g" ../../stepfunction/state_machine.json
 sed -i -e "s/ACCOUNT/${ACCOUNT}/g" ../../stepfunction/state_machine.json
 sed -i -e "s/SQS_NAME/${SQS_NAME}/g" ../../stepfunction/state_machine.json

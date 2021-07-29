@@ -38,8 +38,11 @@ Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOU
                "Effect": "Allow",
                "Action": [
                    "rds:ListTagsForResource",
+                   "rds:DescribeDBClusterSnapshots",
                    "rds:DescribeDBSnapshots",
+                   "rds:CopyDBClusterSnapshot",
                    "rds:CopyDBSnapshot",
+                   "rds:ModifyDBClusterSnapshotAttribute",
                    "rds:ModifyDBSnapshotAttribute"
                ],
                "Resource": "arn:aws:rds:*:<SOURCE-ACCOUNT>:*:*"
@@ -79,6 +82,7 @@ Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOU
                 "events:Put*",
                 "events:DescribeRule",
                 "rds:DescribeDBSnapshots",
+                "rds:DescribeDBClusterSnapshots",
                 "ecs:CreateCluster",
                 "ec2:DeleteNetworkInterface",
                 "rds:DescribeDBParameterGroups",
@@ -87,6 +91,7 @@ Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOU
                 "ec2:CreateNetworkInterface",
                 "ec2:DescribeNetworkInterfaces",
                 "ecs:RegisterTaskDefinition",
+                "rds:DescribeDBClusters",
                 "rds:DescribeDBInstances",
                 "rds:DescribeOptionGroups"
             ],
@@ -97,7 +102,9 @@ Replace \<STAGING-ACCOUNT> with staging account number. Replace \<SOURCING-ACCOU
             "Effect": "Allow",
             "Action": [
                 "rds:CreateDBSnapshot",
-                "rds:RestoreDBInstanceFromDBSnapshot"
+                "rds:CreateDBClusterSnapshot",
+                "rds:RestoreDBInstanceFromDBSnapshot",
+                "rds:RestoreDBClusterFromSnapshot"
             ],
             "Resource": [
                 "arn:aws:rds:*:*:*:*maskopy*",
@@ -224,10 +231,15 @@ Replace \<STAGING-ACCOUNT> with staging account number. Replace \<RDS-DEFAULTKMS
             "Effect": "Allow",
             "Action": [
                 "rds:DescribeDBSnapshots",
+                "rds:DescribeDBClusterSnapshots",
                 "rds:CopyDBSnapshot",
+                "rds:CopyDBClusterSnapshot",
                 "rds:DescribeDBInstances",
+                "rds:DescribeDBClusters",
                 "rds:ModifyDBInstance",
-                "rds:ModifyDBSnapshotAttribute"
+                "rds:ModifyDBCluster",
+                "rds:ModifyDBSnapshotAttribute",
+                "rds:ModifyDBClusterSnapshotAttribute"
             ],
             "Resource": "arn:aws:rds:*:*:*:maskopy*"
         },

@@ -71,10 +71,11 @@ Export the following environment variables into the shell. Refer to the descript
 		export AWS_REGION="<AWS_REGION>"
 		export CROSS_ACCOUNT_ROLE="arn:aws:iam::<SOURCE_ACCOUNT_ID>:role/Xacnt_APP_MASKOPY"
 		export COST_CENTER="<COST_CENTER_FOR_BILLING>"
-		export DESTINATION_ACCOUNT_ID="<STAGING_ACCOUNT_ID>"
+		export DESTINATION_ACCOUNT_ID="<SOURCE_ACCOUNT_ID>"
 		export FARGATE_SECURITY_GROUP="<ID_OF_LAMBDA_SG>"
 		export FARGATE_SUBNET0="<STAGING_PRIVATE_SUBNET_ID>"
 		export FARGATE_SUBNET1="<STAGING_PRIVATE_SUBNET_ID>"
+		export FARGATE_TASK_ROLE="<ECS_SERVICE_ROLE>"
 		export LAMBDA_BUCKET_LOCATION="<S3_BUCKET_NAME>/MASKOPY"
 		export LAMBDA_ROLE="LAMBDA_MASKOPY"
 		export LAMBDA_SECURITY_GROUP="<ID_OF_LAMBDA_SG>"
@@ -96,6 +97,7 @@ Export the following environment variables into the shell. Refer to the descript
 | FARGATE_SECURITY_GROUP          | Security group associated to the fargate task. We have created MASKOPY-app in the above steps. Use SG-id of MASKOPY-app.                                                                       | sg-01234567891234                                                   |
 | FARGATE_SUBNET0                 | Private subnet id in one availability zone to be associated to the fargate task.                                                                                                               | subnet-01234567891234                                                   |
 | FARGATE_SUBNET1                 | Private subnet id in another availability zone to be associated to the fargate task.                                                                                                           | subnet-12340123456789                                                   |
+| FARGATE_TASK_ROLE               | ECS Fargate role to use for running obfuscaation for Maskopy                                                                                                                                   | ECS_MASKOPY    |
 | LAMBDA_BUCKET_LOCATION          | S3 bucket location where lambda code is zipped and staged.                                                                                                                                     | my-obfuscation-bucket-name/MASKOPY                                                   |
 | LAMBDA_ROLE                     | Role to be associated to the lambda functions.                                                                                                                                                 | LAMBDA_MASKOPY     |
 | LAMBDA_SECURITY_GROUP           | Security group associated with the lambda functions.                                                                                                                                           | sg-01234567891234    |

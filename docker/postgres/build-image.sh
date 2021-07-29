@@ -25,10 +25,11 @@ while getopts ':a:r:' flag; do
   esac
 done
 
+
 mkdir -p release
 $(aws ecr get-login --no-include-email --registry-ids ${AWS_ACCOUNT_ID} --region ${AWS_REGION})
 
 docker build -t postgres-maskopy .
 docker save postgres-maskopy > postgres-maskopy.tar
- 
+
 mv -f postgres-maskopy.tar release
